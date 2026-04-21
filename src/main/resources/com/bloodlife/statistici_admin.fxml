@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="25" styleClass="dashboard-root" stylesheets="@style.css"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.bloodlife.controller.StatisticiController">
+
+    <padding><Insets top="30" left="40" right="40" bottom="30"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox>
+            <Label text="📊 Panou Statistici &amp; Rapoarte" styleClass="header-title"/>
+            <Label text="Analiza performanței centrelor și distribuția resurselor." styleClass="header-subtitle"/>
+        </VBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="📥 Exportă Raport PDF" onAction="#handleExportRaport" styleClass="button-primary"/>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" styleClass="modern-scroll-pane" VBox.vgrow="ALWAYS">
+        <GridPane hgap="30" vgap="30">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox styleClass="info-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="Distribuție Grupe Sânge (Stoc)" style="-fx-font-weight: bold;"/>
+                <PieChart fx:id="grupePieChart" prefHeight="350"/>
+            </VBox>
+
+            <VBox styleClass="info-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Evoluție Donări (Ultimele 6 luni)" style="-fx-font-weight: bold;"/>
+                <BarChart fx:id="donariBarChart" prefHeight="350">
+                    <xAxis><CategoryAxis side="BOTTOM" label="Lună"/></xAxis>
+                    <yAxis><NumberAxis side="LEFT" label="Nr. Donări"/></yAxis>
+                </BarChart>
+            </VBox>
+
+            <VBox styleClass="info-card" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                <Label text="Activitate pe Centre de Donare" style="-fx-font-weight: bold;"/>
+                <BarChart fx:id="centreBarChart" prefHeight="300">
+                    <xAxis><CategoryAxis side="BOTTOM" label="Centru"/></xAxis>
+                    <yAxis><NumberAxis side="LEFT" label="Pungi Colectate"/></yAxis>
+                </BarChart>
+            </VBox>
+        </GridPane>
+    </ScrollPane>
+</VBox>

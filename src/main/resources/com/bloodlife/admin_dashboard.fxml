@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<VBox spacing="20" styleClass="dashboard-root" stylesheets="@style.css"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bloodlife.controller.AdminController">
+    <padding><Insets top="20" left="20" right="20" bottom="20"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Label text="🛡️ Panou Administrare" styleClass="header-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="🚪 Logout" onAction="#handleLogout" styleClass="logout-button"/>
+    </HBox>
+
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <tabs>
+            <Tab text="📊 Statistici">
+                <fx:include source="statistici_admin.fxml"/>
+            </Tab>
+
+            <Tab text="👥 Utilizatori">
+                <VBox spacing="10">
+                    <padding><Insets top="10" left="10" right="10" bottom="10"/></padding>
+                    <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                            <TableColumn fx:id="colNume" text="Nume" prefWidth="150"/>
+                            <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
+                            <TableColumn fx:id="colRol" text="Rol" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+                    <Button text="🗑️ Șterge Utilizator" onAction="#handleDeleteUser" styleClass="text-button-red"/>
+                </VBox>
+            </Tab>
+
+            <Tab text="📅 Toate Programările">
+                <VBox spacing="10">
+                    <padding><Insets top="10" left="10" right="10" bottom="10"/></padding>
+                    <TableView fx:id="allProgramariTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colProgData" text="Data"/>
+                            <TableColumn fx:id="colProgDonator" text="Donator"/>
+                            <TableColumn fx:id="colProgStatus" text="Status"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+        </tabs>
+    </TabPane>
+</VBox>

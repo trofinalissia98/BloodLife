@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<VBox spacing="25" styleClass="dashboard-root" stylesheets="@style.css"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bloodlife.controller.IstoricController">
+
+    <padding><Insets top="40" left="60" right="60" bottom="40"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Button onAction="#handleBack" text="←" styleClass="back-button-circle"
+                style="-fx-background-color: #f1f2f6; -fx-text-fill: #2f3542; -fx-font-weight: bold; -fx-background-radius: 50; -fx-pref-width: 40; -fx-pref-height: 40;"/>
+        <VBox>
+            <Label text="Istoricul Tău Medical" styleClass="header-title" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
+            <Label text="Evidența donărilor tale și acces la rezultatele analizelor." styleClass="header-subtitle" style="-fx-text-fill: #747d8c;"/>
+        </VBox>
+    </HBox>
+
+    <VBox spacing="10" VBox.vgrow="ALWAYS" styleClass="info-card" style="-fx-padding: 0; -fx-background-radius: 15; -fx-overflow: hidden;">
+        <TableView fx:id="tabelIstoric" VBox.vgrow="ALWAYS" styleClass="modern-table"
+                   style="-fx-background-color: transparent; -fx-selection-bar: #f1f2f6;">
+            <columns>
+                <TableColumn fx:id="colData" text="📅 Data Donării" prefWidth="150" />
+                <TableColumn fx:id="colTip" text="🩸 Tip Recoltare" prefWidth="180" />
+                <TableColumn fx:id="colCantitate" text="⚖️ Cantitate" prefWidth="120" />
+                <TableColumn fx:id="colCentru" text="🏥 Locație" prefWidth="250" />
+                <TableColumn fx:id="colActiune" text="📄 Analize" prefWidth="180" />
+            </columns>
+            <placeholder>
+                <Label text="Nu ai nicio donare înregistrată încă." style="-fx-text-fill: #a4b0be;"/>
+            </placeholder>
+        </TableView>
+    </VBox>
+
+    <HBox alignment="CENTER" style="-fx-padding: 10; -fx-background-color: #f1f2f6; -fx-background-radius: 10;">
+        <Label text="💡 Analizele devin disponibile în maximum 48 de ore de la recoltare."
+               style="-fx-text-fill: #57606f; -fx-font-style: italic;"/>
+    </HBox>
+</VBox>

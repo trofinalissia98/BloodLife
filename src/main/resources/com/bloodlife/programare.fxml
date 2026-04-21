@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane prefHeight="750.0" prefWidth="1000.0" styleClass="dashboard-root"
+           stylesheets="@style.css" xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bloodlife.controller.ProgramareController">
+
+    <AnchorPane mouseTransparent="true">
+        <Circle fill="#b22222" radius="200.0" layoutX="50.0" layoutY="50.0" opacity="0.02"/>
+    </AnchorPane>
+
+    <VBox spacing="30.0">
+        <padding><Insets top="40" left="60" right="60" bottom="40"/></padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Button onAction="#handleCancel" text="←" styleClass="back-button-circle"/>
+            <VBox spacing="5">
+                <Label text="Rezervă un interval" styleClass="header-title"/>
+                <Label text="Alege locația și ora care ți se potrivesc cel mai bine." styleClass="header-subtitle"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="25">
+            <VBox spacing="15" styleClass="step-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="1" styleClass="step-number"/>
+                    <Label text="Locația Donării" styleClass="step-title"/>
+                </HBox>
+                <ComboBox fx:id="centruCombo" maxWidth="Infinity" styleClass="modern-combo" promptText="Caută un centru de transfuzie..."/>
+            </VBox>
+
+            <VBox spacing="15" styleClass="step-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="2" styleClass="step-number"/>
+                    <Label text="Data Programării" styleClass="step-title"/>
+                </HBox>
+                <DatePicker fx:id="dataPicker" maxWidth="Infinity" styleClass="modern-datepicker" promptText="Alege ziua"/>
+            </VBox>
+        </HBox>
+
+        <VBox spacing="20" styleClass="slots-container" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="3" styleClass="step-number"/>
+                <Label text="Intervale Orare Disponibile" styleClass="step-title"/>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" styleClass="modern-scroll-pane" VBox.vgrow="ALWAYS">
+                <FlowPane fx:id="oreContainer" hgap="12" vgap="12">
+                    <padding><Insets/></padding>
+                </FlowPane>
+            </ScrollPane>
+        </VBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="25" styleClass="action-bar-programare">
+            <Button text="Anulează procesul" onAction="#handleCancel" styleClass="text-button-muted"/>
+            <Button fx:id="btnConfirma" text="CONFIRMĂ PROGRAMAREA" onAction="#handleConfirmare"
+                    disable="true" styleClass="button-confirm-final"/>
+        </HBox>
+    </VBox>
+</StackPane>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" styleClass="dashboard-root" stylesheets="@style.css"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.bloodlife.controller.StocController">
+
+    <padding><Insets top="30" left="30" right="30" bottom="30"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox>
+            <Label text="📦 Gestiune Stoc Sânge" styleClass="header-title"/>
+            <Label text="Vizualizează și gestionează unitățile de sânge disponibile." styleClass="header-subtitle"/>
+        </VBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="⬅ Înapoi la Validare" onAction="#handleInapoi" styleClass="text-button-red"/>
+    </HBox>
+
+    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="info-card">
+        <Label text="Filtrează după:" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="filterTipCombo" promptText="Tip Recoltare" prefWidth="150"/>
+        <ComboBox fx:id="filterGrupaCombo" promptText="Grupă Sanguină" prefWidth="100"/>
+        <Button text="🔍 Filtrează" onAction="#handleFilter" styleClass="button-primary"/>
+        <Button text="🔄 Reset" onAction="#incarcaDatele" styleClass="nav-button"/>
+    </HBox>
+    <VBox spacing="10" styleClass="info-card" style="-fx-border-color: #ff7675; -fx-border-width: 2; -fx-background-color: #fff5f5;">
+        <Label text="📢 Emite Alertă Urgentă" style="-fx-font-weight: bold; -fx-text-fill: #d63031; -fx-font-size: 14px;"/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <ComboBox fx:id="alertGrupaCombo" promptText="Grupa" prefWidth="100"/>
+            <ComboBox fx:id="alertRhCombo" promptText="RH" prefWidth="80"/>
+            <TextField fx:id="alertMesajField" promptText="Mesaj (ex: Avem nevoie urgentă!)" HBox.hgrow="ALWAYS"/>
+            <Button text="🚀 Trimite Alerte" onAction="#handleTrimiteAlerta"
+                    style="-fx-background-color: #d63031; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </VBox>
+
+    <TableView fx:id="stocTable" VBox.vgrow="ALWAYS" styleClass="modern-table">
+        <columns>
+            <TableColumn fx:id="colCod" text="Cod Unitate" prefWidth="150"/>
+            <TableColumn fx:id="colTip" text="Tip" prefWidth="120"/>
+            <TableColumn fx:id="colGrupa" text="Grupă" prefWidth="80"/>
+            <TableColumn fx:id="colRh" text="RH" prefWidth="60"/>
+            <TableColumn fx:id="colCantitate" text="Cantitate (ml)" prefWidth="100"/>
+            <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
+            <TableColumn fx:id="colData" text="Data Recoltării" prefWidth="150"/>
+        </columns>
+    </TableView>
+    <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="info-card">
+        <Label text="Acțiuni unitate selectată:" style="-fx-font-weight: bold;"/>
+        <Button text="⚠️ Marcare EXPIRAT" onAction="#handleMarkExpirat"
+                style="-fx-background-color: #fab1a0; -fx-text-fill: #c0392b; -fx-font-weight: bold;"/>
+        <Button text="🔒 Rezervă pentru Spital" onAction="#handleMarkRezervat"
+                style="-fx-background-color: #81ecec; -fx-text-fill: #00818a; -fx-font-weight: bold;"/>
+        <Button text="✅ Marcare UTILIZAT" onAction="#handleMarkUtilizat"
+                styleClass="button-primary"/>
+    </HBox>
+</VBox>

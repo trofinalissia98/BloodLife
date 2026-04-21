@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.shape.Circle?>
+
+
+
+<StackPane prefHeight="600.0" prefWidth="800.0" styleClass="login-root"
+
+           stylesheets="@style.css" xmlns="http://javafx.com/javafx/17"
+
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bloodlife.controller.LoginController">
+
+
+
+    <AnchorPane mouseTransparent="true">
+
+        <Circle fill="#b22222" radius="200.0" layoutX="800.0" layoutY="100.0" opacity="0.05"/>
+
+        <Circle fill="#b22222" radius="150.0" layoutX="50.0" layoutY="550.0" opacity="0.05"/>
+
+    </AnchorPane>
+
+
+
+    <VBox fx:id="loginCard" alignment="CENTER" spacing="30.0" maxWidth="380" maxHeight="500"
+
+          styleClass="login-card">
+
+        <padding>
+
+            <Insets bottom="50.0" left="40.0" right="40.0" top="50.0"/>
+
+        </padding>
+
+
+
+        <VBox alignment="CENTER" spacing="10">
+
+            <StackPane styleClass="logo-container">
+
+                <Label text="🩸" style="-fx-font-size: 40px;"/>
+
+            </StackPane>
+
+            <Label text="BloodLife" styleClass="brand-title"/>
+
+            <Label text="Puterea de a salva este în tine" styleClass="subtitle-label"/>
+
+        </VBox>
+
+
+
+        <VBox spacing="20.0" styleClass="input-container">
+
+            <VBox spacing="5">
+
+                <Label text="Adresa de Email" styleClass="field-label"/>
+
+                <TextField fx:id="emailField" promptText="exemplu@mail.com" styleClass="modern-input"/>
+
+            </VBox>
+
+            <VBox spacing="5">
+
+                <Label text="Parola" styleClass="field-label"/>
+
+                <PasswordField fx:id="parolaField" promptText="••••••••" styleClass="modern-input"/>
+
+            </VBox>
+
+        </VBox>
+
+
+
+        <VBox spacing="15" alignment="CENTER">
+
+            <Button onAction="#handleLogin" prefHeight="50.0" maxWidth="Infinity"
+
+                    text="CONECTARE" styleClass="button-login"/>
+
+
+
+            <HBox alignment="CENTER" spacing="5">
+
+                <Label text="Nu ai un cont?" style="-fx-text-fill: #95a5a6;"/>
+
+                <Hyperlink onAction="#handleGoToRegister" text="Înregistrează-te"
+
+                           styleClass="modern-hyperlink"/>
+
+            </HBox>
+
+        </VBox>
+
+
+
+        <Label fx:id="statusLabel" styleClass="error-label" wrapText="true" textAlignment="CENTER"/>
+
+    </VBox>
+
+</StackPane>

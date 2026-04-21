@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<HBox prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" styleClass="main-container"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.bloodlife.controller.MedicController">
+
+    <VBox spacing="20" style="-fx-background-color: #b22222; -fx-pref-width: 250;">
+        <padding><Insets top="40" left="20" right="20" bottom="20"/></padding>
+        <Label text="BloodLife MEDIC" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;"/>
+        <Separator opacity="0.3"/>
+        <Button text="Programări Azi" maxWidth="Infinity" styleClass="button-sidebar-active"/>
+        <Button text="Stoc Sânge" maxWidth="Infinity" styleClass="button-sidebar"/>
+        <Button text="Cereri Spitale" maxWidth="Infinity" styleClass="button-sidebar"/>
+        <Region VBox.vgrow="ALWAYS" />
+        <Button onAction="#handleLogout" text="Deconectare" maxWidth="Infinity" style="-fx-background-color: #8b0000; -fx-text-fill: white;"/>
+    </VBox>
+
+    <VBox spacing="20" HBox.hgrow="ALWAYS">
+        <padding><Insets top="40" left="40" right="40" bottom="40"/></padding>
+
+        <Label fx:id="welcomeLabel" text="Panou Control Medic" styleClass="title-label"/>
+
+        <HBox spacing="20">
+            <VBox styleClass="profile-card" HBox.hgrow="ALWAYS">
+                <Label text="Donatori Așteptați" style="-fx-text-fill: #6c757d;"/>
+                <Label text="12" style="-fx-font-size: 32px; -fx-font-weight: bold;"/>
+            </VBox>
+            <VBox styleClass="profile-card" HBox.hgrow="ALWAYS">
+                <Label text="Urgențe (Stoc Scăzut)" style="-fx-text-fill: #6c757d;"/>
+                <Label text="0 NEG" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #dc3545;"/>
+            </VBox>
+        </HBox>
+
+        <TableView fx:id="tabelProgramari" VBox.vgrow="ALWAYS" styleClass="modern-table">
+            <columns>
+                <TableColumn text="Ora" prefWidth="80"/>
+                <TableColumn text="Nume Donator" prefWidth="250"/>
+                <TableColumn text="Tip Donare" prefWidth="150"/>
+                <TableColumn text="Acțiuni" prefWidth="150"/>
+            </columns>
+        </TableView>
+    </VBox>
+</HBox>

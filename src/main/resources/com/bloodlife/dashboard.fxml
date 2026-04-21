@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane prefHeight="750.0" prefWidth="1100.0" stylesheets="@style.css"
+           xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.bloodlife.controller.DashboardController">
+
+    <HBox styleClass="dashboard-root">
+        <VBox spacing="30" styleClass="sidebar">
+            <padding><Insets top="50" left="25" right="25" bottom="30"/></padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <StackPane styleClass="logo-icon-small">
+                    <Label text="🩸" style="-fx-font-size: 20px;"/>
+                </StackPane>
+                <Label text="BloodLife" styleClass="sidebar-brand"/>
+            </HBox>
+
+            <Separator opacity="0.1" maxWidth="200"/>
+
+            <VBox spacing="12" VBox.vgrow="ALWAYS">
+                <Button text="🏠  Profilul Meu" maxWidth="Infinity" styleClass="nav-button-active"/>
+                <Button onAction="#handleProgramareNoua" text="📅  Programare Nouă" maxWidth="Infinity" styleClass="nav-button"/>
+                <Button onAction="#handleIstoric" text="📜  Istoric Donări" maxWidth="Infinity" styleClass="nav-button"/>
+                <Button text="🏥  Centre Disponibile" maxWidth="Infinity" styleClass="nav-button"/>
+            </VBox>
+
+            <VBox spacing="15">
+                <Separator opacity="0.1"/>
+                <Button onAction="#handleLogout" text="🚪 Deconectare" maxWidth="Infinity" styleClass="logout-button"/>
+            </VBox>
+        </VBox>
+
+        <VBox spacing="35" HBox.hgrow="ALWAYS" styleClass="content-area">
+            <padding><Insets top="50" left="60" right="60" bottom="50"/></padding>
+
+            <HBox alignment="CENTER_LEFT">
+                <VBox spacing="5">
+                    <Label fx:id="welcomeLabel" text="Bună, Ion!" styleClass="header-title"/>
+                    <Label fx:id="urgentaLabel" visible="false" managed="false" wrapText="true" maxWidth="Infinity" />
+                    <Label text="Sângele tău poate salva până la 3 vieți astăzi." styleClass="header-subtitle"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Circle fill="#f1f2f6" radius="25" stroke="#dfe6e9"/>
+            </HBox>
+
+            <HBox spacing="25">
+                <VBox styleClass="info-card, card-blood" HBox.hgrow="ALWAYS">
+                    <Label text="GRUPĂ SANGUINĂ" styleClass="card-label"/>
+                    <Label fx:id="grupaLabel" text="B+" styleClass="card-value-large"/>
+                </VBox>
+
+                <VBox styleClass="info-card" HBox.hgrow="ALWAYS">
+                    <Label text="GREUTATE" styleClass="card-label"/>
+                    <HBox alignment="BASELINE_LEFT" spacing="5">
+                        <Label fx:id="greutateLabel" text="75" styleClass="card-value"/>
+                        <Label text="kg" styleClass="card-unit"/>
+                    </HBox>
+                </VBox>
+
+                <VBox styleClass="info-card" HBox.hgrow="ALWAYS">
+                    <Label text="STATUS ACTUAL" styleClass="card-label"/>
+                    <Label fx:id="statusLabel" text="ELIGIBIL" styleClass="card-value-status"/>
+                </VBox>
+            </HBox>
+
+            <VBox spacing="20" styleClass="activity-container">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Informații Medicale &amp; Recomandări" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Vezi detalii" styleClass="text-button-red"/>
+                </HBox>
+
+                <HBox spacing="20" styleClass="status-message-box">
+                    <StackPane styleClass="info-icon-circle">
+                        <Label text="ℹ" style="-fx-text-fill: #b22222; -fx-font-weight: bold;"/>
+                    </StackPane>
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <VBox spacing="15" styleClass="info-card">
+                            <Label text="Următoarea Donare" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+                            <VBox fx:id="programareActivaBox" spacing="10" visible="false" managed="false">
+                                <Label fx:id="infoDonareLabel" text="Se încarcă datele..." wrapText="true" style="-fx-text-fill: #2d3436; -fx-font-size: 14px;"/>
+                                <HBox spacing="10">
+                                    <Button text="❌ Anulează" onAction="#handleAnuleazaProgramare" style="-fx-background-color: #ffeaa7; -fx-text-fill: #d63031; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                                    <Button text="✏️ Modifică Ora" onAction="#handleModificaProgramare" style="-fx-background-color: #dfe6e9; -fx-text-fill: #2d3436; -fx-cursor: hand;"/>
+                                </HBox>
+                            </VBox>
+                            <Label fx:id="noProgramareLabel" text="Nu ai nicio programare activă." visible="false" managed="false"/>
+                        </VBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </HBox>
+    <VBox fx:id="chatWindow" visible="false" managed="false"
+          maxWidth="350" maxHeight="500" spacing="10"
+          StackPane.alignment="BOTTOM_RIGHT"
+          style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: #f1f2f6; -fx-border-radius: 20; -fx-padding: 15;">
+
+        <StackPane.margin>
+            <Insets bottom="100.0" right="30.0" />
+        </StackPane.margin>
+
+        <effect>
+            <DropShadow color="#00000022" radius="20" />
+        </effect>
+
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 0 0 10 0; -fx-border-color: #f1f2f6; -fx-border-width: 0 0 1 0;">
+            <Label text="🩸" style="-fx-font-size: 18px;"/>
+            <Label text="Bloodie AI Assistant" style="-fx-font-weight: bold; -fx-text-fill: #2d3436;"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button onAction="#handleToggleChat" text="✕" style="-fx-background-color: transparent; -fx-cursor: hand; -fx-text-fill: #b2bec3; -fx-font-size: 16px;"/>
+        </HBox>
+
+        <ScrollPane fx:id="chatScroll" fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+            <VBox fx:id="messageContainer" spacing="12" style="-fx-padding: 5;"/>
+        </ScrollPane>
+
+        <HBox spacing="8" style="-fx-padding: 5 0 0 0;">
+            <TextField fx:id="chatInputField" onAction="#handleSendMessage" promptText="Scrie aici..." HBox.hgrow="ALWAYS"
+                       style="-fx-background-color: #f1f2f6; -fx-background-radius: 15; -fx-padding: 10;"/>
+            <Button onAction="#handleSendMessage" text="➤"
+                    style="-fx-background-color: #ff4757; -fx-text-fill: white; -fx-background-radius: 50; -fx-min-width: 40; -fx-min-height: 40; -fx-cursor: hand;"/>
+        </HBox>
+    </VBox>
+
+    <Button fx:id="btnChat" onAction="#handleToggleChat" text="💬"
+            StackPane.alignment="BOTTOM_RIGHT"
+            style="-fx-background-radius: 50; -fx-min-width: 65; -fx-min-height: 65; -fx-background-color: #ff4757; -fx-text-fill: white; -fx-font-size: 26px; -fx-cursor: hand;">
+        <StackPane.margin>
+            <Insets bottom="25.0" right="30.0" />
+        </StackPane.margin>
+        <effect>
+            <DropShadow color="#ff475766" radius="15" />
+        </effect>
+    </Button>
+
+</StackPane>

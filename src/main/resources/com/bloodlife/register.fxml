@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.paint.Color?>
+
+<ScrollPane fitToWidth="true" stylesheets="@style.css" styleClass="main-container"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.bloodlife.controller.RegisterController">
+
+    <VBox alignment="TOP_CENTER" spacing="20.0">
+        <padding>
+            <Insets bottom="30.0" left="50.0" right="50.0" top="30.0"/>
+        </padding>
+
+        <Label text="Creează Cont" styleClass="title-label"/>
+
+        <GridPane hgap="15.0" vgap="15.0" alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50" />
+                <ColumnConstraints percentWidth="50" />
+            </columnConstraints>
+
+            <TextField fx:id="numeField" promptText="Nume Complet" GridPane.columnSpan="2" styleClass="text-input"/>
+            <TextField fx:id="emailField" promptText="Email" GridPane.columnSpan="2" styleClass="text-input"/>
+            <PasswordField fx:id="parolaField" promptText="Parolă" GridPane.columnSpan="2" styleClass="text-input"/>
+
+            <ComboBox fx:id="grupaCombo" promptText="Grupă" maxWidth="Infinity" GridPane.rowIndex="3" />
+            <ComboBox fx:id="rhCombo" promptText="RH" maxWidth="Infinity" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+            <TextField fx:id="greutateField" promptText="Greutate (kg)" GridPane.rowIndex="4" styleClass="text-input"/>
+            <DatePicker fx:id="dataNasteriiPicker" promptText="Data Nașterii" maxWidth="Infinity" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+        </GridPane>
+
+        <Button onAction="#handleRegister" prefHeight="45.0" prefWidth="200.0"
+                text="ÎNREGISTRARE" styleClass="button-primary" />
+
+        <Button onAction="#handleBackToLogin" text="Înapoi la Login"
+                style="-fx-background-color: transparent; -fx-text-fill: #6c757d; -fx-cursor: hand;"/>
+
+        <Label fx:id="statusLabel" />
+    </VBox>
+</ScrollPane>
