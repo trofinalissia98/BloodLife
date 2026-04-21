@@ -1,5 +1,6 @@
 package com.bloodlife.service;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -8,7 +9,10 @@ import java.util.concurrent.TimeUnit;
 
 public class ChatService {
     // Aici vei pune cheia ta API obținută de pe Google AI Studio
-    private static final String API_KEY = "AIzaSyCwnQedybAYaSenWhqS9daeNXUEwwk1T5w";
+    private static final Dotenv dotenv = Dotenv.load();
+    private static final String API_KEY = dotenv.get("GEMINI_API_KEY");
+
+    // URL-ul tău va folosi acum variabila din .env
     private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
 
     private final OkHttpClient client;

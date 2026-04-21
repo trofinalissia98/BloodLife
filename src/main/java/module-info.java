@@ -8,6 +8,7 @@ module com.bloodlife {
     requires javafx.swing;
     requires okhttp3;
     requires org.json;
+    requires io.github.cdimascio.dotenv.java;
     //requires com.bloodlife;
 
     // Permitem JavaFX să acceseze pachetele pentru a încărca interfața
