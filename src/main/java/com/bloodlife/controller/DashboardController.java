@@ -5,6 +5,7 @@ import com.bloodlife.domain.Donator;
 import com.bloodlife.domain.Utilizator;
 import com.bloodlife.repository.ProgramareDbRepository;
 import com.bloodlife.service.ChatService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -344,7 +345,11 @@ public class DashboardController {
         messageContainer.getChildren().add(label);
 
         // Scroll automat la ultimul mesaj
-        chatScroll.setVvalue(1.0);
+        Platform.runLater(() -> {
+            // messageContainer este VBox-ul din interiorul ScrollPane-ului
+            // chatScroll este ScrollPane-ul tău
+            chatScroll.setVvalue(1.0); // 1.0 înseamnă maxim jos (100%)
+        });
     }
 
 }
