@@ -38,7 +38,7 @@ public class HelloApplication extends Application {
         ChestionarDbRepository chestionarRepo = new ChestionarDbRepository(url, user, pass);
         ProgramareDbRepository progRepo = new ProgramareDbRepository(url, user, pass);
 
-        programareService = new ProgramareService(progRepo);
+        programareService = new ProgramareService(progRepo, dRepo);
         chestionarService = new ChestionarService(chestionarRepo);
         utilizatorService = new UtilizatorService(uRepo, dRepo);
 
@@ -59,30 +59,29 @@ public class HelloApplication extends Application {
     }
 
     /**
-     * LOGICA DE REDIRECTIONARE DUPA ROL
-     * Aceasta este metoda pe care o vei apela din LoginController dupa autentificare reusita
+     * REDIRECȚIONARE INTELIGENTĂ ÎN FUNCȚIE DE ROL
      */
-    public static void handleUserRedirection(Utilizator user) throws IOException {
-        setUtilizatorCurent(user);
-
-        // Verificăm rolul (folosind Enum-ul tău RolUtilizator)
-        if (user.getRol() == RolUtilizator.MEDIC) {
-            showMedicPanel();
-        }
-        else if (user.getRol() == RolUtilizator.ADMIN) {
-            showAdminPanel();
-        }
-        else {
-            showDashboard(); // Default pentru Donator
-        }
-    }
-
-    public static void showDashboard() throws IOException {
+    public static void showMainInterface() throws IOException {
         if (utilizatorCurent == null) {
             showLoginScene();
             return;
         }
 
+        if (utilizatorCurent.getRol() == RolUtilizator.MEDIC) {
+            showMedicPanel();
+        } else if (utilizatorCurent.getRol() == RolUtilizator.ADMIN) {
+            showAdminPanel();
+        } else {
+            showDashboard();
+        }
+    }
+
+    public static void handleUserRedirection(Utilizator user) throws IOException {
+        setUtilizatorCurent(user);
+        showMainInterface();
+    }
+
+    public static void showDashboard() throws IOException {
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("dashboard.fxml"));
         Parent root = loader.load();
 
@@ -94,15 +93,7 @@ public class HelloApplication extends Application {
         primaryStage.setTitle("BloodLife - Dashboard Donator");
     }
 
-    /**
-     * Afisare Panou Medic (UC-04)
-     */
     public static void showMedicPanel() throws IOException {
-        if (utilizatorCurent == null) {
-            showLoginScene();
-            return;
-        }
-
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("validare_medicala.fxml"));
         Parent root = loader.load();
 
@@ -116,7 +107,6 @@ public class HelloApplication extends Application {
 
     public static void showAdminPanel() {
         try {
-            // Încărcăm fișierul de statistici creat anterior
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("dashboard_admin.fxml"));
             Parent root = loader.load();
 
@@ -124,7 +114,6 @@ public class HelloApplication extends Application {
             primaryStage.setTitle("BloodLife Admin - Control Panel");
             primaryStage.centerOnScreen();
         } catch (IOException e) {
-            System.err.println("Eroare la încărcarea panoului de Admin!");
             e.printStackTrace();
         }
     }
@@ -147,10 +136,10 @@ public class HelloApplication extends Application {
         }
     }
 
-    // Getters
     public static ChestionarService getChestionarService() { return chestionarService; }
     public static UtilizatorService getUtilizatorService() { return utilizatorService; }
     public static ProgramareService getProgramareService() { return programareService; }
+    public static Utilizator getUtilizatorCurent() { return utilizatorCurent; }
     public static void setUtilizatorCurent(Utilizator user) { utilizatorCurent = user; }
 
     public static void main(String[] args) {

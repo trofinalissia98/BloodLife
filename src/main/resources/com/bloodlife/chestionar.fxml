@@ -4,42 +4,44 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.shape.Circle?>
 
-<StackPane prefHeight="750.0" prefWidth="900.0" styleClass="dashboard-root"
+<StackPane prefHeight="750.0" prefWidth="950.0" styleClass="dashboard-root"
            stylesheets="@style.css" xmlns="http://javafx.com/javafx/17"
            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bloodlife.controller.ChestionarController">
 
     <AnchorPane mouseTransparent="true">
-        <Circle fill="#b22222" radius="150.0" layoutX="850.0" layoutY="50.0" opacity="0.03"/>
+        <Circle fill="#ff4757" radius="250.0" layoutX="900.0" layoutY="100.0" opacity="0.1"/>
     </AnchorPane>
 
-    <VBox alignment="TOP_CENTER" spacing="25.0">
+    <VBox alignment="TOP_CENTER" spacing="30.0">
         <padding>
-            <Insets top="40" left="60" right="60" bottom="40"/>
+            <Insets top="50" left="60" right="60" bottom="50"/>
         </padding>
 
         <VBox alignment="CENTER" spacing="10">
-            <Label text="Verificare Eligibilitate" styleClass="header-title"/>
+            <Label text="Verificare Eligibilitate" styleClass="header-title-light"/>
             <Label text="Siguranța donării este prioritatea noastră. Te rugăm să completezi datele de mai jos."
-                   styleClass="header-subtitle" wrapText="true" textAlignment="CENTER" maxWidth="600"/>
+                   styleClass="header-subtitle-light" wrapText="true" textAlignment="CENTER" maxWidth="700"/>
         </VBox>
 
-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="modern-scroll-pane">
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
             <content>
-                <VBox fx:id="questionsContainer" spacing="15" styleClass="questions-grid">
+                <VBox fx:id="questionsContainer" spacing="18">
                     <padding>
-                        <Insets top="10" left="10" right="15" bottom="10"/>
+                        <Insets top="10" left="10" right="20" bottom="10"/>
                     </padding>
+                    <!-- Întrebările vor fi injectate aici -->
                 </VBox>
             </content>
         </ScrollPane>
 
-        <VBox spacing="20" alignment="CENTER" styleClass="footer-container">
-            <Label fx:id="resultLabel" styleClass="result-label" wrapText="true" textAlignment="CENTER"/>
+        <VBox spacing="25" alignment="CENTER" style="-fx-background-color: rgba(255,255,255,0.05); -fx-background-radius: 30; -fx-padding: 30;">
+            <Label fx:id="resultLabel" style="-fx-text-fill: #ff7675; -fx-font-weight: bold; -fx-font-size: 16px;" wrapText="true" textAlignment="CENTER"/>
 
-            <HBox spacing="25" alignment="CENTER">
-                <Button text="Anulează" onAction="#handleCancel" styleClass="text-button-muted"/>
+            <HBox spacing="30" alignment="CENTER">
+                <Button text="Anulează" onAction="#handleCancel"
+                        style="-fx-background-color: transparent; -fx-text-fill: rgba(255,255,255,0.6); -fx-font-weight: bold; -fx-cursor: hand;"/>
                 <Button text="Validează Chestionarul" onAction="#handleValidare"
-                        styleClass="button-primary-large"/>
+                        styleClass="button-primary" style="-fx-padding: 15 40; -fx-font-size: 16px;"/>
             </HBox>
         </VBox>
     </VBox>

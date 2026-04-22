@@ -1,5 +1,6 @@
 package com.bloodlife.controller;
 
+import com.bloodlife.HelloApplication;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 import javafx.embed.swing.SwingFXUtils;
@@ -68,11 +69,12 @@ public class StatisticiController {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Unități Colectate");
 
-        String sql = "SELECT c.nume, COUNT(ps.id) as total " +
-                "FROM centre_donare c " +
-                "LEFT JOIN programari p ON c.id = p.id_centru " +
-                "LEFT JOIN pungi_sange ps ON p.id = ps.id_programare " +
-                "GROUP BY c.nume";
+        String sql = """
+            SELECT c.nume, COUNT(p.id) as total 
+            FROM centre_donare c 
+            LEFT JOIN programari p ON c.id = p.id_centru AND p.status = 'FINALIZATA' 
+            GROUP BY c.nume
+            """;
 
         try (Connection con = DriverManager.getConnection(url, user, pass);
              ResultSet rs = con.createStatement().executeQuery(sql)) {
@@ -86,22 +88,19 @@ public class StatisticiController {
     @FXML
     private void handleExportRaport() {
         try {
-            // 1. Destinația fișierului
             String fileName = "Raport_Statistici_BloodLife_" + System.currentTimeMillis() + ".pdf";
             Document document = new Document();
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
 
-            // 2. Adăugare Titlu
             Font fontTitlu = new Font(Font.HELVETICA, 18, Font.BOLD);
             Paragraph titlu = new Paragraph("Raport Managerial BloodLife", fontTitlu);
             titlu.setAlignment(Element.ALIGN_CENTER);
             document.add(titlu);
 
             document.add(new Paragraph("Data generării: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))));
-            document.add(new Paragraph(" ")); // Spațiu gol
+            document.add(new Paragraph(" "));
 
-            // 3. Conversie PieChart în Imagine pentru PDF
             WritableImage imagePie = grupePieChart.snapshot(new SnapshotParameters(), null);
             File filePie = new File("temp_pie.png");
             ImageIO.write(SwingFXUtils.fromFXImage(imagePie, null), "png", filePie);
@@ -112,7 +111,6 @@ public class StatisticiController {
             document.add(new Paragraph("1. Distribuția Grupelor de Sânge în Stoc"));
             document.add(pdfImgPie);
 
-            // 4. Conversie BarChart în Imagine pentru PDF
             WritableImage imageBar = donariBarChart.snapshot(new SnapshotParameters(), null);
             File fileBar = new File("temp_bar.png");
             ImageIO.write(SwingFXUtils.fromFXImage(imageBar, null), "png", fileBar);
@@ -124,12 +122,9 @@ public class StatisticiController {
             document.add(pdfImgBar);
 
             document.close();
-
-            // 5. Curățare fișiere temporare
             filePie.delete();
             fileBar.delete();
 
-            // 6. Notificare utilizator
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Export Reușit");
             alert.setHeaderText(null);
@@ -141,6 +136,16 @@ public class StatisticiController {
             alert.setTitle("Eroare Export");
             alert.setContentText("Nu s-a putut genera PDF-ul: " + e.getMessage());
             alert.showAndWait();
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleBack() {
+        try {
+            // FIX: Folosim showMainInterface() pentru a reveni la interfața potrivită rolului
+            HelloApplication.showMainInterface();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

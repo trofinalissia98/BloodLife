@@ -2,43 +2,95 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.SVGPath?>
 
-<ScrollPane fitToWidth="true" stylesheets="@style.css" styleClass="main-container"
-            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.bloodlife.controller.RegisterController">
+<StackPane prefHeight="750.0" prefWidth="900.0" styleClass="login-root"
+           stylesheets="@style.css" xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bloodlife.controller.RegisterController">
 
-    <VBox alignment="TOP_CENTER" spacing="20.0">
-        <padding>
-            <Insets bottom="30.0" left="50.0" right="50.0" top="30.0"/>
-        </padding>
+    <!-- Elemente decorative de fundal -->
+    <AnchorPane mouseTransparent="true">
+        <Circle fill="#ff4757" radius="300.0" layoutX="900.0" layoutY="100.0" opacity="0.1"/>
+        <Circle fill="#ff4757" radius="200.0" layoutX="50.0" layoutY="650.0" opacity="0.1"/>
+    </AnchorPane>
 
-        <Label text="Creează Cont" styleClass="title-label"/>
+    <!-- ScrollPane pentru a preveni suprapunerea pe ecrane mici -->
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+        <VBox alignment="CENTER" fillWidth="false">
+            <padding>
+                <Insets top="40" bottom="40" left="20" right="20"/>
+            </padding>
 
-        <GridPane hgap="15.0" vgap="15.0" alignment="CENTER">
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50" />
-                <ColumnConstraints percentWidth="50" />
-            </columnConstraints>
+            <VBox fx:id="registerCard" spacing="25.0" minWidth="500" maxWidth="550" styleClass="register-card">
+                <padding>
+                    <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+                </padding>
 
-            <TextField fx:id="numeField" promptText="Nume Complet" GridPane.columnSpan="2" styleClass="text-input"/>
-            <TextField fx:id="emailField" promptText="Email" GridPane.columnSpan="2" styleClass="text-input"/>
-            <PasswordField fx:id="parolaField" promptText="Parolă" GridPane.columnSpan="2" styleClass="text-input"/>
+                <VBox alignment="CENTER" spacing="10">
+                    <StackPane styleClass="logo-container" style="-fx-min-width: 70; -fx-min-height: 70; -fx-max-width: 70; -fx-max-height: 70;">
+                        <SVGPath content="M15 6C15 6 9.00001 13 9.00001 17C9.00001 20.3137 11.6863 23 15 23C18.3137 23 21 20.3137 21 17C21 13 15 6 15 6Z"
+                                 fill="#ff4757" scaleX="2.0" scaleY="2.0" />
+                    </StackPane>
+                    <Label text="Creează Cont" styleClass="brand-title" style="-fx-font-size: 28px;"/>
+                    <Label text="Completează datele pentru a deveni donator" styleClass="subtitle-label"/>
+                </VBox>
 
-            <ComboBox fx:id="grupaCombo" promptText="Grupă" maxWidth="Infinity" GridPane.rowIndex="3" />
-            <ComboBox fx:id="rhCombo" promptText="RH" maxWidth="Infinity" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                <GridPane hgap="15.0" vgap="15.0">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50" />
+                        <ColumnConstraints percentWidth="50" />
+                    </columnConstraints>
 
-            <TextField fx:id="greutateField" promptText="Greutate (kg)" GridPane.rowIndex="4" styleClass="text-input"/>
-            <DatePicker fx:id="dataNasteriiPicker" promptText="Data Nașterii" maxWidth="Infinity" GridPane.rowIndex="4" GridPane.columnIndex="1" />
-        </GridPane>
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2">
+                        <Label text="Nume Complet" styleClass="field-label"/>
+                        <TextField fx:id="numeField" promptText="Ex: Popescu Ion" styleClass="modern-input"/>
+                    </VBox>
 
-        <Button onAction="#handleRegister" prefHeight="45.0" prefWidth="200.0"
-                text="ÎNREGISTRARE" styleClass="button-primary" />
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                        <Label text="Email" styleClass="field-label"/>
+                        <TextField fx:id="emailField" promptText="exemplu@mail.com" styleClass="modern-input"/>
+                    </VBox>
 
-        <Button onAction="#handleBackToLogin" text="Înapoi la Login"
-                style="-fx-background-color: transparent; -fx-text-fill: #6c757d; -fx-cursor: hand;"/>
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">
+                        <Label text="Parolă" styleClass="field-label"/>
+                        <PasswordField fx:id="parolaField" promptText="••••••••" styleClass="modern-input"/>
+                    </VBox>
 
-        <Label fx:id="statusLabel" />
-    </VBox>
-</ScrollPane>
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                        <Label text="Grupă Sanguină" styleClass="field-label"/>
+                        <ComboBox fx:id="grupaCombo" promptText="Grupă" maxWidth="Infinity" styleClass="modern-input"/>
+                    </VBox>
+
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Label text="RH" styleClass="field-label"/>
+                        <ComboBox fx:id="rhCombo" promptText="RH" maxWidth="Infinity" styleClass="modern-input"/>
+                    </VBox>
+
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                        <Label text="Greutate (kg)" styleClass="field-label"/>
+                        <TextField fx:id="greutateField" promptText="Ex: 70" styleClass="modern-input"/>
+                    </VBox>
+
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <Label text="Data Nașterii" styleClass="field-label"/>
+                        <DatePicker fx:id="dataNasteriiPicker" promptText="Alege data" maxWidth="Infinity" styleClass="modern-input"/>
+                    </VBox>
+                </GridPane>
+
+                <VBox spacing="20" alignment="CENTER">
+                    <Button onAction="#handleRegister" prefHeight="50.0" maxWidth="Infinity"
+                            text="ÎNREGISTRARE" styleClass="button-primary" />
+
+                    <HBox alignment="CENTER" spacing="5">
+                        <Label text="Ai deja un cont?" style="-fx-text-fill: #636e72;"/>
+                        <Hyperlink onAction="#handleBackToLogin" text="Conectează-te"
+                                   styleClass="modern-hyperlink"/>
+                    </HBox>
+                </VBox>
+
+                <Label fx:id="statusLabel" styleClass="error-label" wrapText="true" textAlignment="CENTER" maxWidth="Infinity"/>
+            </VBox>
+        </VBox>
+    </ScrollPane>
+</StackPane>

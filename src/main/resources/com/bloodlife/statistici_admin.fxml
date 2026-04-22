@@ -8,18 +8,20 @@
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.bloodlife.controller.StatisticiController">
 
-    <padding><Insets top="30" left="40" right="40" bottom="30"/></padding>
+    <padding><Insets top="40" left="40" right="40" bottom="40"/></padding>
 
     <HBox alignment="CENTER_LEFT" spacing="20">
-        <VBox>
-            <Label text="📊 Panou Statistici &amp; Rapoarte" styleClass="header-title"/>
-            <Label text="Analiza performanței centrelor și distribuția resurselor." styleClass="header-subtitle"/>
+        <Button text="← Înapoi" onAction="#handleBack" styleClass="btn-cancel-small"
+                style="-fx-text-fill: white; -fx-border-color: white;"/>
+        <VBox spacing="5">
+            <Label text="📊 Panou Statistici &amp; Rapoarte" styleClass="header-title-light"/>
+            <Label text="Analiza performanței centrelor și distribuția resurselor." styleClass="header-subtitle-light"/>
         </VBox>
         <Region HBox.hgrow="ALWAYS" />
         <Button text="📥 Exportă Raport PDF" onAction="#handleExportRaport" styleClass="button-primary"/>
     </HBox>
 
-    <ScrollPane fitToWidth="true" styleClass="modern-scroll-pane" VBox.vgrow="ALWAYS">
+    <ScrollPane fitToWidth="true" styleClass="modern-scroll-pane" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
         <GridPane hgap="30" vgap="30">
             <columnConstraints>
                 <ColumnConstraints percentWidth="50"/>
@@ -27,23 +29,23 @@
             </columnConstraints>
 
             <VBox styleClass="info-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Label text="Distribuție Grupe Sânge (Stoc)" style="-fx-font-weight: bold;"/>
+                <Label text="Distribuție Grupe Sânge (Stoc)" style="-fx-font-weight: bold; -fx-text-fill: #2d3436;"/>
                 <PieChart fx:id="grupePieChart" prefHeight="350"/>
             </VBox>
 
             <VBox styleClass="info-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                <Label text="Evoluție Donări (Ultimele 6 luni)" style="-fx-font-weight: bold;"/>
+                <Label text="Evoluție Donări (Ultimele 6 luni)" style="-fx-font-weight: bold; -fx-text-fill: #2d3436;"/>
                 <BarChart fx:id="donariBarChart" prefHeight="350">
-                    <xAxis><CategoryAxis side="BOTTOM" label="Lună"/></xAxis>
-                    <yAxis><NumberAxis side="LEFT" label="Nr. Donări"/></yAxis>
+                    <xAxis><CategoryAxis side="BOTTOM" label="Lună" tickLabelFill="BLACK"/></xAxis>
+                    <yAxis><NumberAxis side="LEFT" label="Nr. Donări" tickLabelFill="BLACK"/></yAxis>
                 </BarChart>
             </VBox>
 
             <VBox styleClass="info-card" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
-                <Label text="Activitate pe Centre de Donare" style="-fx-font-weight: bold;"/>
+                <Label text="Activitate pe Centre de Donare" style="-fx-font-weight: bold; -fx-text-fill: #2d3436;"/>
                 <BarChart fx:id="centreBarChart" prefHeight="300">
-                    <xAxis><CategoryAxis side="BOTTOM" label="Centru"/></xAxis>
-                    <yAxis><NumberAxis side="LEFT" label="Pungi Colectate"/></yAxis>
+                    <xAxis><CategoryAxis side="BOTTOM" label="Centru" tickLabelFill="BLACK"/></xAxis>
+                    <yAxis><NumberAxis side="LEFT" label="Pungi Colectate" tickLabelFill="BLACK"/></yAxis>
                 </BarChart>
             </VBox>
         </GridPane>

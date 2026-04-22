@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Circle?>
 
 <HBox prefHeight="750.0" prefWidth="1100.0" styleClass="dashboard-root"
       stylesheets="@style.css" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bloodlife.controller.MedicController">
 
-    <VBox spacing="30" styleClass="sidebar" style="-fx-background-color: linear-gradient(to bottom, #2c3e50, #000000);">
+    <VBox spacing="30" styleClass="sidebar">
         <padding><Insets top="50" left="25" right="25" bottom="30"/></padding>
 
         <HBox alignment="CENTER_LEFT" spacing="15">
-            <StackPane styleClass="logo-icon-small" style="-fx-background-color: rgba(255,255,255,0.1);">
+            <StackPane styleClass="logo-icon-small">
                 <Label text="👨‍⚕️" style="-fx-font-size: 20px;"/>
             </StackPane>
             <Label text="BloodLife Pro" styleClass="sidebar-brand"/>
@@ -22,9 +20,9 @@
         <Separator opacity="0.1" maxWidth="200"/>
 
         <VBox spacing="12" VBox.vgrow="ALWAYS">
-            <Button text="📋  Programări Azi" maxWidth="Infinity" styleClass="nav-button-active" style="-fx-background-color: white; -fx-text-fill: #2c3e50;"/>
+            <Button text="📋  Programări Azi" maxWidth="Infinity" styleClass="nav-button-active"/>
             <Button text="📦  Gestiune Stoc" onAction="#handleGoToStoc" maxWidth="Infinity" styleClass="nav-button"/>
-            <Button text="📊  Statistici" maxWidth="Infinity" styleClass="nav-button"/>
+            <Button fx:id="btnStatistici" onAction="#handleGoToStatistici" text="📊  Statistici" maxWidth="Infinity" styleClass="nav-button"/>
         </VBox>
 
         <Button onAction="#handleLogout" text="🚪 Deconectare" maxWidth="Infinity" styleClass="logout-button"/>
@@ -34,12 +32,11 @@
         <padding><Insets top="40" left="40" right="40" bottom="40"/></padding>
 
         <VBox spacing="5">
-            <Label text="Validare Proces Donare" styleClass="header-title"/>
-            <Label text="Confirmă prezența donatorului și înregistrează unitatea de sânge." styleClass="header-subtitle"/>
+            <Label text="Validare Proces Donare" styleClass="header-title-light"/>
+            <Label text="Confirmă prezența donatorului și înregistrează unitatea de sânge." styleClass="header-subtitle-light"/>
         </VBox>
 
         <HBox spacing="30" VBox.vgrow="ALWAYS">
-
             <VBox spacing="15" prefWidth="350" styleClass="info-card">
                 <Label text="Donatori Programați" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
                 <ListView fx:id="donatoriAziList" VBox.vgrow="ALWAYS" style="-fx-background-radius: 15; -fx-border-color: #eee; -fx-border-radius: 15;"/>

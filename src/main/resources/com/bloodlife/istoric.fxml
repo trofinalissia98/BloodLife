@@ -2,40 +2,38 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Text?>
 
-<VBox spacing="25" styleClass="dashboard-root" stylesheets="@style.css"
+<VBox spacing="30" styleClass="dashboard-root" stylesheets="@style.css"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bloodlife.controller.IstoricController">
 
-    <padding><Insets top="40" left="60" right="60" bottom="40"/></padding>
+    <padding><Insets top="50" left="60" right="60" bottom="50"/></padding>
 
-    <HBox alignment="CENTER_LEFT" spacing="20">
-        <Button onAction="#handleBack" text="←" styleClass="back-button-circle"
-                style="-fx-background-color: #f1f2f6; -fx-text-fill: #2f3542; -fx-font-weight: bold; -fx-background-radius: 50; -fx-pref-width: 40; -fx-pref-height: 40;"/>
-        <VBox>
-            <Label text="Istoricul Tău Medical" styleClass="header-title" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
-            <Label text="Evidența donărilor tale și acces la rezultatele analizelor." styleClass="header-subtitle" style="-fx-text-fill: #747d8c;"/>
+    <HBox alignment="CENTER_LEFT" spacing="25">
+        <Button onAction="#handleBack" text="←"
+                style="-fx-background-color: rgba(255,255,255,0.1); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 50; -fx-min-width: 50; -fx-min-height: 50; -fx-font-size: 20px; -fx-cursor: hand;"/>
+        <VBox spacing="5">
+            <Label text="Istoricul Tău Medical" styleClass="header-title-light"/>
+            <Label text="Evidența donărilor tale și acces la rezultatele analizelor." styleClass="header-subtitle-light"/>
         </VBox>
     </HBox>
 
-    <VBox spacing="10" VBox.vgrow="ALWAYS" styleClass="info-card" style="-fx-padding: 0; -fx-background-radius: 15; -fx-overflow: hidden;">
-        <TableView fx:id="tabelIstoric" VBox.vgrow="ALWAYS" styleClass="modern-table"
-                   style="-fx-background-color: transparent; -fx-selection-bar: #f1f2f6;">
+    <VBox VBox.vgrow="ALWAYS" styleClass="modern-table-container" style="-fx-background-color: white; -fx-background-radius: 25; -fx-padding: 10;">
+        <TableView fx:id="tabelIstoric" VBox.vgrow="ALWAYS" styleClass="modern-table">
             <columns>
-                <TableColumn fx:id="colData" text="📅 Data Donării" prefWidth="150" />
-                <TableColumn fx:id="colTip" text="🩸 Tip Recoltare" prefWidth="180" />
-                <TableColumn fx:id="colCantitate" text="⚖️ Cantitate" prefWidth="120" />
-                <TableColumn fx:id="colCentru" text="🏥 Locație" prefWidth="250" />
-                <TableColumn fx:id="colActiune" text="📄 Analize" prefWidth="180" />
+                <TableColumn fx:id="colData" text="📅 Data Donării" prefWidth="180" />
+                <TableColumn fx:id="colTip" text="🩸 Tip Recoltare" prefWidth="200" />
+                <TableColumn fx:id="colCantitate" text="⚖️ Cantitate" prefWidth="150" />
+                <TableColumn fx:id="colCentru" text="🏥 Locație" prefWidth="280" />
+                <TableColumn fx:id="colActiune" text="📄 Analize" prefWidth="200" />
             </columns>
             <placeholder>
-                <Label text="Nu ai nicio donare înregistrată încă." style="-fx-text-fill: #a4b0be;"/>
+                <Label text="Nu ai nicio donare înregistrată încă." style="-fx-text-fill: #2d3436;"/>
             </placeholder>
         </TableView>
     </VBox>
 
-    <HBox alignment="CENTER" style="-fx-padding: 10; -fx-background-color: #f1f2f6; -fx-background-radius: 10;">
+    <HBox alignment="CENTER" style="-fx-padding: 15; -fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 15;">
         <Label text="💡 Analizele devin disponibile în maximum 48 de ore de la recoltare."
-               style="-fx-text-fill: #57606f; -fx-font-style: italic;"/>
+               style="-fx-text-fill: white; -fx-font-style: italic; -fx-font-size: 14px;"/>
     </HBox>
 </VBox>

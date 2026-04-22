@@ -31,13 +31,12 @@ public class MedicController {
 
     @FXML
     public void initialize() {
-        // Inițializăm repository-ul (asigură-te că datele sunt corecte)
         this.repo = new ProgramareDbRepository("jdbc:postgresql://localhost:5432/bloodlife_db", "postgres", "patratel98");
 
         tipRecoltareCombo.setItems(FXCollections.observableArrayList("Sânge Total", "Plasmă", "Trombocite"));
         tipRecoltareCombo.setValue("Sânge Total");
         generareCodPunga();
-        handleIncarcaDonatori(); // Încărcăm lista la pornire
+        handleIncarcaDonatori();
     }
 
     public void setInitialData(Utilizator medic) {
@@ -50,16 +49,9 @@ public class MedicController {
 
     @FXML
     protected void handleIncarcaDonatori() {
-        // Curățăm lista actuală din interfață
         donatoriAziList.getItems().clear();
-
-        // Luăm datele reale din baza de date prin repository
         List<String> listaReala = repo.getDonatoriInAsteptareAzi();
-
-        if (listaReala.isEmpty()) {
-            // Opțional: poți pune un mesaj dacă nu mai e nimeni la coadă
-            System.out.println("Nu mai sunt donatori în așteptare pentru azi.");
-        } else {
+        if (!listaReala.isEmpty()) {
             donatoriAziList.setItems(FXCollections.observableArrayList(listaReala));
         }
     }
@@ -67,27 +59,23 @@ public class MedicController {
     @FXML
     protected void handleFinalizeaza() {
         String selectat = donatoriAziList.getSelectionModel().getSelectedItem();
-
         if (selectat == null) {
             afiseazaAlerta("Eroare", "Te rugăm să selectezi un donator din listă!", Alert.AlertType.ERROR);
             return;
         }
 
         try {
-            // Extragem ID-ul programării din String (presupunem formatul "Nume | ID: 1")
             String[] parti = selectat.split("ID: ");
             Long idProgramare = Long.parseLong(parti[1].trim());
 
             int ts = Integer.parseInt(tsField.getText());
             int td = Integer.parseInt(tdField.getText());
 
-            // Regula medicală de aur
             if (ts > 180 || td > 110) {
                 afiseazaAlerta("Respins", "Tensiune prea mare! Donatorul este inapt astăzi.", Alert.AlertType.WARNING);
                 return;
             }
 
-            // SALVARE ÎN DB
             repo.finalizeazaProcesDonare(
                     idProgramare,
                     codPungaField.getText(),
@@ -96,8 +84,6 @@ public class MedicController {
             );
 
             afiseazaAlerta("Succes", "Recoltare finalizată și salvată în stoc!", Alert.AlertType.INFORMATION);
-
-            // Curățăm UI-ul
             donatoriAziList.getItems().remove(selectat);
             curataFormular();
             generareCodPunga();
@@ -126,7 +112,6 @@ public class MedicController {
 
     @FXML
     protected void handleRespinge() {
-        // Aici poți face un simplu update de status în 'RESPINS'
         String selectat = donatoriAziList.getSelectionModel().getSelectedItem();
         if (selectat != null) {
             donatoriAziList.getItems().remove(selectat);
@@ -140,6 +125,18 @@ public class MedicController {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("gestiune_stoc.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) codPungaField.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handleGoToStatistici() {
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("statistici_admin.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) donatoriAziList.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();

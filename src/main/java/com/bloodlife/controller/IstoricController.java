@@ -2,12 +2,12 @@ package com.bloodlife.controller;
 
 import com.bloodlife.HelloApplication;
 import com.bloodlife.domain.Utilizator;
+import com.bloodlife.repository.ProgramareDbRepository;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,17 +18,21 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.*;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class IstoricController {
     @FXML private TableView<DonareInfo> tabelIstoric;
     @FXML private TableColumn<DonareInfo, String> colData, colTip, colCantitate, colCentru, colActiune;
 
     private Utilizator utilizatorLogat;
-    private final String url = "jdbc:postgresql://localhost:5432/bloodlife_db";
+    private ProgramareDbRepository programareRepo; // Adăugăm instanța repository-ului
 
     public void setInitialData(Utilizator user) {
         this.utilizatorLogat = user;
+        // Inițializăm repository-ul aici, cu detaliile de conectare
+        this.programareRepo = new ProgramareDbRepository("jdbc:postgresql://localhost:5432/bloodlife_db", "postgres", "patratel98");
         configurareTabel();
         incarcaDatele();
     }
@@ -61,31 +65,21 @@ public class IstoricController {
 
     private void incarcaDatele() {
         ObservableList<DonareInfo> lista = FXCollections.observableArrayList();
-        String sql = """
-            SELECT p.data_programare, p.status, ps.tip_recoltare, ps.cantitate_ml, c.nume as centru
-            FROM programari p
-            LEFT JOIN pungi_sange ps ON p.id = ps.id_programare
-            JOIN centre_donare c ON p.id_centru = c.id
-            WHERE p.id_donator = ? AND p.status = 'FINALIZATA'
-            ORDER BY p.data_programare DESC
-            """;
+        try {
+            // Folosim metoda din repository pentru a prelua istoricul
+            List<Map<String, Object>> istoricDonari = programareRepo.getIstoricDonari(utilizatorLogat.getId());
 
-        try (Connection con = DriverManager.getConnection(url, "postgres", "patratel98");
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setLong(1, utilizatorLogat.getId());
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
+            for (Map<String, Object> donare : istoricDonari) {
                 lista.add(new DonareInfo(
-                        rs.getDate("data_programare").toString(),
-                        rs.getString("tip_recoltare") != null ? rs.getString("tip_recoltare") : "Sânge Total",
-                        rs.getInt("cantitate_ml") + " ml",
-                        rs.getString("centru")
+                        donare.get("data_programare").toString(),
+                        donare.get("tip_recoltare") != null ? donare.get("tip_recoltare").toString() : "Sânge Total",
+                        donare.get("cantitate_ml") != null ? donare.get("cantitate_ml").toString() + " ml" : "N/A",
+                        donare.get("nume_centru").toString()
                 ));
             }
             tabelIstoric.setItems(lista);
-        } catch (SQLException e) {
+        } catch (RuntimeException e) { // Catch RuntimeException from repository
+            afiseazaAlerta("Eroare Bază de Date", "Nu s-a putut încărca istoricul donărilor: " + e.getMessage(), Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }

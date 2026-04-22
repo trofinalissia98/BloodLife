@@ -3,81 +3,86 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<HBox prefHeight="750.0" prefWidth="1150.0" stylesheets="@style.css" styleClass="main-container"
+<HBox prefHeight="750.0" prefWidth="1150.0" stylesheets="@style.css" styleClass="dashboard-root"
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.bloodlife.controller.AdminController">
 
-    <VBox spacing="20" style="-fx-background-color: #343a40; -fx-min-width: 250;">
+    <VBox spacing="20" styleClass="sidebar">
         <padding><Insets top="40" left="20" right="20" bottom="20"/></padding>
-        <Label text="🩸 BloodLife Admin" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;"/>
+        <Label text="🩸 BloodLife Admin" styleClass="sidebar-brand"/>
         <Separator opacity="0.3"/>
 
         <VBox spacing="10" VBox.vgrow="ALWAYS">
-            <Button text="📊 Tablou de Bord" maxWidth="Infinity" styleClass="nav-button-active"/>
-            <Button text="👥 Utilizatori &amp; Medici" maxWidth="Infinity" styleClass="nav-button"/>
-            <Button text="🏥 Gestionare Centre" maxWidth="Infinity" styleClass="nav-button"/>
-            <Button text="📜 Jurnale Sistem (Logs)" maxWidth="Infinity" styleClass="nav-button"/>
+            <Button fx:id="btnDashboard" onAction="#showDashboardTab" text="📊 Tablou de Bord" maxWidth="Infinity" styleClass="nav-button-active"/>
+            <Button fx:id="btnUsers" onAction="#showUsersTab" text="👥 Utilizatori &amp; Medici" maxWidth="Infinity" styleClass="nav-button"/>
+            <Button fx:id="btnAlerts" onAction="#showAlertsTab" text="📢 Alerte Globale" maxWidth="Infinity" styleClass="nav-button"/>
         </VBox>
 
         <Separator opacity="0.1"/>
-        <Button onAction="#handleLogout" text="🚪 Logout" maxWidth="Infinity"
-                style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+        <Button onAction="#handleLogout" text="🚪 Logout" maxWidth="Infinity" styleClass="logout-button"/>
     </VBox>
 
     <VBox HBox.hgrow="ALWAYS" spacing="0">
-        <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" styleClass="admin-tab-pane">
+        <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS"
+                 styleClass="admin-tab-pane" style="-fx-tab-max-height: 0; -fx-tab-min-height: 0;">
 
-            <Tab text="📈 Statistici &amp; Rapoarte">
+            <Tab fx:id="tabDashboard">
                 <content>
                     <fx:include source="statistici_admin.fxml"/>
                 </content>
             </Tab>
 
-            <Tab text="👥 Gestionare Medici &amp; Donatori">
-                <VBox spacing="20">
-                    <padding><Insets top="30" left="30" right="30" bottom="30"/></padding>
+            <Tab fx:id="tabUsers">
+                <VBox spacing="30">
+                    <padding><Insets top="40" left="40" right="40" bottom="40"/></padding>
                     <HBox spacing="15" alignment="CENTER_LEFT">
-                        <Label text="Lista Utilizatorilor" styleClass="header-title" style="-fx-font-size: 20px;"/>
+                        <VBox spacing="5">
+                            <Label text="Lista Utilizatorilor" styleClass="header-title-light"/>
+                            <Label text="Gestionează conturile medicilor și donatorilor din sistem." styleClass="header-subtitle-light"/>
+                        </VBox>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="+ Adaugă Medic Nou" styleClass="button-primary"/>
+                        <Button onAction="#handleAddMedic" text="+ Adaugă Medic Nou" styleClass="button-primary"/>
                     </HBox>
 
                     <TableView fx:id="utilizatoriTable" VBox.vgrow="ALWAYS" styleClass="modern-table">
                         <columns>
                             <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
-                            <TableColumn fx:id="colNume" text="Nume Complet" prefWidth="200"/>
-                            <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
-                            <TableColumn fx:id="colRol" text="Rol" prefWidth="100"/>
-                            <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+                            <TableColumn fx:id="colNume" text="Nume Complet" prefWidth="250"/>
+                            <TableColumn fx:id="colEmail" text="Email" prefWidth="250"/>
+                            <TableColumn fx:id="colRol" text="Rol" prefWidth="150"/>
                         </columns>
                     </TableView>
 
                     <HBox spacing="15" alignment="CENTER_RIGHT">
-                        <Button text="Dezactivează Cont" style="-fx-background-color: #fab1a0; -fx-text-fill: #c0392b;"/>
-                        <Button text="Resetează Parolă" styleClass="button-secondary"/>
+                        <Button onAction="#handleDeactivateUser" text="Dezactivează Cont"
+                                style="-fx-background-color: #fab1a0; -fx-text-fill: #c0392b; -fx-background-radius: 12; -fx-padding: 10 20; -fx-font-weight: bold;"/>
+                        <Button onAction="#handleResetPassword" text="Resetează Parolă" styleClass="button-primary" style="-fx-background-color: #636e72;"/>
                     </HBox>
                 </VBox>
             </Tab>
 
-            <Tab text="📢 Alerte Globale">
-                <VBox spacing="25">
-                    <padding><Insets top="30" left="30" right="30" bottom="30"/></padding>
-                    <Label text="Emitere Alertă Urgentă la Nivel de Sistem" styleClass="header-title" style="-fx-font-size: 20px;"/>
+            <Tab fx:id="tabAlerts">
+                <VBox spacing="30">
+                    <padding><Insets top="40" left="40" right="40" bottom="40"/></padding>
+                    <VBox spacing="5">
+                        <Label text="Emitere Alertă Globală" styleClass="header-title-light"/>
+                        <Label text="Trimite o notificare urgentă către toți donatorii compatibili." styleClass="header-subtitle-light"/>
+                    </VBox>
 
-                    <VBox styleClass="info-card" spacing="20">
-                        <GridPane hgap="15" vgap="15">
-                            <Label text="Grupă Sânge Target:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                            <ComboBox fx:id="adminAlertGrupa" prefWidth="150" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <VBox styleClass="info-card" spacing="25">
+                        <GridPane hgap="20" vgap="20">
+                            <Label text="Grupă Sânge Target:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+                            <ComboBox fx:id="adminAlertGrupa" prefWidth="200" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="modern-input"/>
 
-                            <Label text="RH:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-                            <ComboBox fx:id="adminAlertRh" prefWidth="100" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                            <Label text="RH:" GridPane.rowIndex="0" GridPane.columnIndex="2" style="-fx-font-weight: bold;"/>
+                            <ComboBox fx:id="adminAlertRh" prefWidth="120" GridPane.rowIndex="0" GridPane.columnIndex="3" styleClass="modern-input"/>
 
-                            <Label text="Mesaj Alertă:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                            <TextArea fx:id="adminAlertMesaj" prefHeight="100" promptText="Scrie aici mesajul care va apărea pe dashboard-ul donatorilor..."
-                                      GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+                            <Label text="Mesaj Alertă:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+                            <TextArea fx:id="adminAlertMesaj" prefHeight="150" promptText="Scrie aici mesajul care va apărea pe dashboard-ul donatorilor..."
+                                      GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="3" styleClass="modern-input" style="-fx-background-radius: 15;"/>
                         </GridPane>
                         <Button text="🚀 Emite Alertă către toți donatorii compatibili" onAction="#handleAdminAlerta"
-                                maxWidth="Infinity" styleClass="button-confirm-final"/>
+                                maxWidth="Infinity" styleClass="button-primary" style="-fx-font-size: 16px; -fx-padding: 15;"/>
                     </VBox>
                 </VBox>
             </Tab>

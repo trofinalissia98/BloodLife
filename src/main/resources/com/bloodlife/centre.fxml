@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="25" styleClass="dashboard-root" stylesheets="@style.css"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.bloodlife.controller.CentreController">
+    <padding><Insets top="40" left="40" right="40" bottom="40"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Button text="← Înapoi" onAction="#handleBack" styleClass="btn-cancel-small"
+                style="-fx-text-fill: white; -fx-border-color: white;"/>
+        <VBox spacing="5">
+            <Label text="Centre de Donare Disponibile" styleClass="header-title-light"/>
+            <Label text="Aici poți găsi toate punctele de recoltare din rețeaua BloodLife." styleClass="header-subtitle-light"/>
+        </VBox>
+    </HBox>
+
+    <TableView fx:id="tabelCentre" VBox.vgrow="ALWAYS" styleClass="modern-table">
+        <columns>
+            <TableColumn fx:id="colNume" text="Nume Centru" prefWidth="300"/>
+            <TableColumn fx:id="colAdresa" text="Adresă" prefWidth="450"/>
+            <TableColumn fx:id="colCapacitate" text="Capacitate (donatori/oră)" prefWidth="200"/>
+        </columns>
+    </TableView>
+</VBox>
