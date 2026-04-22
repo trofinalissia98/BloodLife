@@ -10,8 +10,7 @@ The application manages complex workflows including donor eligibility, real-time
 ## ✨ Key Features
 
 ### 1. Multi-User Account Management
-* **Roles:** Separate interfaces and permissions for Donors, Medical Staff (Doctors), and Administrators. 
-* **Profiles:** Personalized profiles where Donors track medical basics (age, weight, history) and Doctors are assigned to specific transfusion centers. 
+* **Roles:** Separate interfaces and permissions for Donors, Medical Staff (Doctors), and Administrators.
 
 ### 2. Digital Pre-Eligibility Screening
 * **Validation:** A mandatory digital questionnaire that automatically validates if a donor meets safety criteria (weight, time since last donation, recent surgeries) before allowing an appointment.
