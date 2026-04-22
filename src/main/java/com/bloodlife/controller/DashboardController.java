@@ -18,10 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 public class DashboardController {
-    @FXML private Label welcomeLabel, grupaLabel, statusLabel, greutateLabel, infoDonareLabel, urgentaLabel;
-
+    // Label-urile vechi + cele noi pentru cardul de programare
+    @FXML private Label welcomeLabel, grupaLabel, statusLabel, greutateLabel, urgentaLabel;
+    @FXML private Label ziuaLabel, centruLabel, oraLabel; // Adăugate pentru noul design
+    @FXML private VBox programareActivaBox; // Cardul cu detalii
+    @FXML private VBox noProgramareLabel;   // Mesajul de "GOL" (l-am numit VBox pentru că în FXML i-am pus iconiță și buton)
     // --- ADAUGĂ ACEST CÂMP PENTRU A REȚINE UTILIZATORUL ---
-    @FXML private VBox programareActivaBox; // Containerul care tine butoanele de anuleaza/modifica
+
 
     // --- SESIUNE ---
     private Utilizator utilizatorLogat;
@@ -72,16 +75,30 @@ public class DashboardController {
                 ResultSet rsV = psV.executeQuery();
 
                 if (rsV.next()) {
-                    String data = rsV.getString("data_programare");
+                    // 1. Luăm datele din DB
+                    String dataSql = rsV.getString("data_programare");
                     String centru = rsV.getString("centru");
                     String ora = rsV.getString("ora_programare");
 
-                    infoDonareLabel.setText("📅 Programat pe " + data + " la ora " + ora + " în " + centru);
+                    // 2. Extragem ziua (din 2026-04-25 luăm 25)
+                    String[] partiData = dataSql.split("-");
+                    String ziua = partiData[partiData.length - 1];
 
-                    // Facem vizibil panoul cu butoane
+                    // 3. ACTUALIZĂM NOILE LABEL-URI (Șterge linia cu infoDonareLabel!)
+                    ziuaLabel.setText(ziua);
+                    centruLabel.setText(centru);
+                    oraLabel.setText("🕒 " + ora);
+
+                    // 4. Gestionăm vizibilitatea
                     programareActivaBox.setVisible(true);
                     programareActivaBox.setManaged(true);
+                    noProgramareLabel.setVisible(false);
+                    noProgramareLabel.setManaged(false);
                 } else {
+                    programareActivaBox.setVisible(false);
+                    programareActivaBox.setManaged(false);
+                    noProgramareLabel.setVisible(true);
+                    noProgramareLabel.setManaged(true);
                     // Dacă nu are programări viitoare, verificăm când poate dona din nou
                     PreparedStatement psU = con.prepareStatement(sqlUltima);
                     psU.setLong(1, user.getId());
@@ -98,16 +115,16 @@ public class DashboardController {
 
                         if (azi.before(dataRevenire)) {
                             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
-                            infoDonareLabel.setText("⏳ Perioadă de recuperare. Poți dona din nou după: " + sdf.format(dataRevenire));
-                            infoDonareLabel.setStyle("-fx-text-fill: #e67e22;");
+                            centruLabel.setText("⏳ Perioadă de recuperare. Poți dona din nou după: " + sdf.format(dataRevenire));
+                            centruLabel.setStyle("-fx-text-fill: #e67e22;");
                             // Opțional: dezactivăm butonul de programare nouă
                             // btnProgramare.setDisable(true);
                         } else {
-                            infoDonareLabel.setText("✅ Ești gata pentru o nouă donare! Programează-te acum.");
-                            infoDonareLabel.setStyle("-fx-text-fill: #27ae60;");
+                            centruLabel.setText("✅ Ești gata pentru o nouă donare! Programează-te acum.");
+                            centruLabel.setStyle("-fx-text-fill: #27ae60;");
                         }
                     } else {
-                        infoDonareLabel.setText("Ești la prima donare? Salvează o viață azi!");
+                       centruLabel.setText("Ești la prima donare? Salvează o viață azi!");
                     }
                 }
             }
@@ -115,31 +132,42 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void initialize() {
+        // Auto-scroll inteligent: când VBox-ul de mesaje crește, scroll-ul coboară
+        if (messageContainer != null && chatScroll != null) {
+            messageContainer.heightProperty().addListener((obs, oldVal, newVal) -> {
+                chatScroll.setVvalue(1.0);
+            });
+        }
+    }
+
     @FXML
     protected void handleProgramareNoua() {
-        // 1. Verificăm dacă are deja o programare activă (să nu facă două)
-        if (infoDonareLabel.getText().contains("Programare activă")) {
-            afiseazaAlerta("Programare existentă",
-                    "Ai deja o programare activă în sistem. O poți anula din istoric dacă dorești să schimbi data.",
-                    Alert.AlertType.WARNING);
+        System.out.println("--- DEBUG: Metoda handleProgramareNoua a fost apelată! ---");
+
+        if (programareActivaBox == null) {
+            System.out.println("--- DEBUG: programareActivaBox este NULL! Verifică fx:id în FXML. ---");
             return;
         }
 
-        // 2. Verificăm limita de 3 luni
-        long zileRamase = getZileRamasePanaLaDonare();
-        if (zileRamase > 0) {
-            afiseazaAlerta("Perioadă de refacere",
-                    "Corpul tău are nevoie de timp pentru a regenera celulele sanguine.\n" +
-                            "Vei putea programa o nouă donare peste " + zileRamase + " zile.",
-                    Alert.AlertType.WARNING);
+        if (programareActivaBox.isVisible()) {
+            System.out.println("--- DEBUG: Metoda se oprește pentru că programareActivaBox este vizibil! ---");
+            afiseazaAlerta("Programare existentă", "Ai deja o programare activă.", Alert.AlertType.WARNING);
             return;
         }
 
-        // 3. Dacă totul e ok, deschidem chestionarul
+        System.out.println("--- DEBUG: Trecem la încărcarea FXML-ului... ---");
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bloodlife/chestionar.fxml"));
+            String fxmlPath = "/com/bloodlife/chestionar.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
+
+            // AQUA ESTE CHEIA: Trebuie să trimiți serviciul și utilizatorul!
             ChestionarController controller = loader.getController();
+            // Folosim HelloApplication.getChestionarService() pentru a lua instanța corectă a serviciului
             controller.setInitialData(HelloApplication.getChestionarService(), utilizatorLogat);
 
             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
@@ -258,7 +286,7 @@ public class DashboardController {
                 // Resetăm interfața
                 programareActivaBox.setVisible(false);
                 programareActivaBox.setManaged(false);
-                infoDonareLabel.setText("Programarea a fost anulată. Poți face una nouă.");
+                centruLabel.setText("Programarea a fost anulată. Poți face una nouă.");
 
                 // Reîncărcăm datele inițiale ca să se reactiveze butonul de programare nouă
                 setInitialData(utilizatorLogat, null);

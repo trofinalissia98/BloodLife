@@ -115,37 +115,75 @@ public class ProgramareDbRepository {
         return istoric;
     }
 
-    public void finalizeazaProcesDonare(Long idProgramare, String codPunga, String tip, int cantitate) {
-        String sqlPunga = "INSERT INTO pungi_sange (cod_unitate, id_programare, tip_recoltare, cantitate_ml, status_punga) VALUES (?, ?, ?, ?, 'DISPONIBIL')";
+    public void finalizeazaProcesDonare(Long idProgramare, String codPunga, String tip, int cantitate) throws SQLException {
+        // 1. Update status în programări
         String sqlUpdateProg = "UPDATE programari SET status = 'FINALIZATA' WHERE id = ?";
 
+        // 2. Aflăm grupa și RH-ul folosind id_utilizator (cheia ta primară din tabelul donatori)
+        String sqlGetInfo = "SELECT d.grupa_sanguina, d.rh FROM donatori d " +
+                "JOIN programari p ON p.id_donator = d.id_utilizator " +
+                "WHERE p.id = ?";
+
+        // 3. INSERT în pungi_sange (TABELUL CORECT conform StocController)
+        // Am verificat: coloanele din script sunt: cod_unitate, tip_recoltare, grupa_sanguina, rh, cantitate_ml, status_punga
+        String sqlInsertStoc = "INSERT INTO pungi_sange (cod_unitate, tip_recoltare, grupa_sanguina, rh, cantitate_ml, status_punga) " +
+                "VALUES (?, ?, ?, ?, ?, 'DISPONIBIL')";
+
+        // 4. Actualizăm data ultimei donări
+        String sqlUpdateUltima = "UPDATE donatori SET ultima_donare = CURRENT_DATE " +
+                "WHERE id_utilizator = (SELECT id_donator FROM programari WHERE id = ?)";
+
         try (Connection con = DriverManager.getConnection(url, user, password)) {
-            con.setAutoCommit(false); // Începem o tranzacție ca să fim siguri că se fac ambele sau niciuna
+            con.setAutoCommit(false); // Începem tranzacția
 
-            try (PreparedStatement psPunga = con.prepareStatement(sqlPunga);
-                 PreparedStatement psProg = con.prepareStatement(sqlUpdateProg)) {
+            try {
+                // Pas 1: Închidem programarea
+                try (PreparedStatement ps1 = con.prepareStatement(sqlUpdateProg)) {
+                    ps1.setLong(1, idProgramare);
+                    ps1.executeUpdate();
+                }
 
-                // 1. Inserăm punga
-                psPunga.setString(1, codPunga);
-                psPunga.setLong(2, idProgramare);
-                psPunga.setString(3, tip);
-                psPunga.setInt(4, cantitate);
-                psPunga.executeUpdate();
+                // Pas 2: Preluăm datele sângelui
+                String grupa = "";
+                String rh = "";
+                try (PreparedStatement ps2 = con.prepareStatement(sqlGetInfo)) {
+                    ps2.setLong(1, idProgramare);
+                    try (ResultSet rs = ps2.executeQuery()) {
+                        if (rs.next()) {
+                            grupa = rs.getString("grupa_sanguina");
+                            rh = rs.getString("rh");
+                        } else {
+                            throw new SQLException("Nu s-au putut găsi datele donatorului pentru ID programare: " + idProgramare);
+                        }
+                    }
+                }
 
-                // 2. Update status programare
-                psProg.setLong(1, idProgramare);
-                psProg.executeUpdate();
+                // Pas 3: Adăugăm punga în stoc
+                try (PreparedStatement ps3 = con.prepareStatement(sqlInsertStoc)) {
+                    ps3.setString(1, codPunga);      // cod_unitate
+                    ps3.setString(2, tip);           // tip_recoltare
+                    ps3.setString(3, grupa);         // grupa_sanguina
+                    ps3.setString(4, rh);            // rh
+                    ps3.setInt(5, cantitate);        // cantitate_ml
+                    ps3.executeUpdate();
+                }
 
-                con.commit(); // Salvăm tot
+                // Pas 4: Actualizăm data în tabelul donatori
+                try (PreparedStatement ps4 = con.prepareStatement(sqlUpdateUltima)) {
+                    ps4.setLong(1, idProgramare);
+                    ps4.executeUpdate();
+                }
+
+                con.commit(); // Dacă am ajuns aici, totul e salvat definitiv
+                System.out.println("✅ Succes: Donare procesată complet!");
+
             } catch (SQLException e) {
-                con.rollback(); // Dacă ceva crapă, dăm înapoi
+                con.rollback(); // Dacă ceva a crăpat, nu salvăm nimic (consistență)
+                System.err.println("❌ Eroare la finalizare: " + e.getMessage());
                 throw e;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
-
     public List<String> getDonatoriInAsteptareAzi() {
         List<String> donatori = new ArrayList<>();
         // Luăm doar programările care au statusul implicit 'PROGRAMAT' și data de azi

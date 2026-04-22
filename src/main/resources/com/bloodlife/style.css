@@ -1084,3 +1084,62 @@
     -fx-alignment: center-left;
     -fx-text-fill: #ff4757;
 }
+/* Cardul Principal */
+.appointment-main-card {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 15, 0, 0, 5);
+    -fx-border-color: #f1f2f6;
+    -fx-border-width: 1;
+}
+
+/* Badge-ul de Calendar (pătrat roșu/alb) */
+.calendar-badge {
+    -fx-background-color: #fff0f1;
+    -fx-background-radius: 12;
+    -fx-min-width: 70;
+    -fx-min-height: 75;
+    -fx-border-color: #ff4757;
+    -fx-border-width: 0 0 0 4; /* Linie roșie doar în stânga */
+}
+
+.calendar-month {
+    -fx-text-fill: #ff4757;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-transform: uppercase;
+}
+
+.calendar-day {
+    -fx-text-fill: #2d3436;
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+}
+
+.appointment-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3436;
+}
+
+.appointment-subinfo {
+    -fx-text-fill: #636e72;
+    -fx-font-size: 13px;
+}
+
+/* Butoane mici */
+.btn-cancel-small {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ff4757;
+    -fx-cursor: hand;
+    -fx-border-color: #ff4757;
+    -fx-border-radius: 5;
+}
+
+.btn-edit-small {
+    -fx-background-color: #f1f2f6;
+    -fx-text-fill: #2d3436;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+}

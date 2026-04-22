@@ -70,29 +70,40 @@
 
             <VBox spacing="20" styleClass="activity-container">
                 <HBox alignment="CENTER_LEFT">
-                    <Label text="Informații Medicale &amp; Recomandări" styleClass="section-title"/>
+                    <Label text="Programări Viitoare" styleClass="section-title"/>
                     <Region HBox.hgrow="ALWAYS"/>
-                    <Button text="Vezi detalii" styleClass="text-button-red"/>
                 </HBox>
 
-                <HBox spacing="20" styleClass="status-message-box">
-                    <StackPane styleClass="info-icon-circle">
-                        <Label text="ℹ" style="-fx-text-fill: #b22222; -fx-font-weight: bold;"/>
-                    </StackPane>
-                    <VBox spacing="5" HBox.hgrow="ALWAYS">
-                        <VBox spacing="15" styleClass="info-card">
-                            <Label text="Următoarea Donare" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
-                            <VBox fx:id="programareActivaBox" spacing="10" visible="false" managed="false">
-                                <Label fx:id="infoDonareLabel" text="Se încarcă datele..." wrapText="true" style="-fx-text-fill: #2d3436; -fx-font-size: 14px;"/>
-                                <HBox spacing="10">
-                                    <Button text="❌ Anulează" onAction="#handleAnuleazaProgramare" style="-fx-background-color: #ffeaa7; -fx-text-fill: #d63031; -fx-font-weight: bold; -fx-cursor: hand;"/>
-                                    <Button text="✏️ Modifică Ora" onAction="#handleModificaProgramare" style="-fx-background-color: #dfe6e9; -fx-text-fill: #2d3436; -fx-cursor: hand;"/>
+                <StackPane>
+                    <VBox fx:id="noProgramareLabel" alignment="CENTER" spacing="10" visible="false" managed="false"
+                          style="-fx-background-color: #f8f9fa; -fx-background-radius: 15; -fx-padding: 30; -fx-border-color: #dfe6e9; -fx-border-style: dashed; -fx-border-radius: 15;">
+                        <Label text="📭" style="-fx-font-size: 30px;"/>
+                        <Label text="Nu ai nicio programare activă în acest moment." style="-fx-text-fill: #636e72;"/>
+                        <Button onAction="#handleProgramareNoua" text="Programează-te acum" styleClass="text-button-red"/>
+                    </VBox>
+
+                    <VBox fx:id="programareActivaBox" spacing="15" visible="false" managed="false" styleClass="appointment-main-card">
+                        <HBox spacing="20" alignment="CENTER_LEFT">
+                            <VBox alignment="CENTER" styleClass="calendar-badge">
+                                <Label text="APR" styleClass="calendar-month"/>
+                                <Label fx:id="ziuaLabel" text="25" styleClass="calendar-day"/>
+                            </VBox>
+
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label fx:id="centruLabel" text="Centrul de Transfuzie Sanguină" styleClass="appointment-title"/>
+                                <HBox spacing="15">
+                                    <Label fx:id="oraLabel" text="🕒 09:30" styleClass="appointment-subinfo"/>
+                                    <Label text="📍 Locație confirmată" styleClass="appointment-subinfo"/>
                                 </HBox>
                             </VBox>
-                            <Label fx:id="noProgramareLabel" text="Nu ai nicio programare activă." visible="false" managed="false"/>
-                        </VBox>
+
+                            <VBox alignment="CENTER_RIGHT" spacing="10">
+                                <Button onAction="#handleAnuleazaProgramare" text="Anulează" styleClass="btn-cancel-small"/>
+                                <Button onAction="#handleModificaProgramare" text="Modifică ora" styleClass="btn-edit-small"/>
+                            </VBox>
+                        </HBox>
                     </VBox>
-                </HBox>
+                </StackPane>
             </VBox>
         </VBox>
     </HBox>
