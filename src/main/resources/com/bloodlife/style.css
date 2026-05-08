@@ -130,3 +130,38 @@
     -fx-text-fill: white !important;
     -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.3), 10, 0, 2, 2);
 }
+.logo-container {
+    -fx-padding: 30 0 10 0;
+}
+
+.brand-title {
+    -fx-font-size: 36px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #ff4757 !important;
+    -fx-effect: dropshadow(two-pass-box, rgba(255, 71, 87, 0.25), 15, 0, 0, 5);
+}
+
+
+.subtitle-label {
+    -fx-font-size: 15px;
+    -fx-text-fill: #636e72 !important;
+    -fx-font-style: italic;
+    -fx-font-weight: normal;
+}
+
+.button-login {
+    -fx-background-color: linear-gradient(to right, #ff4757, #d63031);
+    -fx-text-fill: white !important;
+    -fx-font-weight: 900;
+    -fx-font-size: 16px;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-transition: 0.3s;
+    -fx-effect: dropshadow(three-pass-box, rgba(255,71,87,0.4), 20, 0, 0, 8);
+}
+
+.button-login:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(three-pass-box, rgba(255,71,87,0.6), 30, 0, 0, 12);
+}

@@ -22,13 +22,14 @@
             <Insets bottom="60.0" left="60.0" right="60.0" top="60.0"/>
         </padding>
 
-        <VBox alignment="CENTER" spacing="20">
+        <!-- Zona modificată: Logo și Titlu -->
+        <VBox alignment="CENTER" spacing="15">
             <StackPane styleClass="logo-container">
                 <SVGPath content="M15 6C15 6 9.00001 13 9.00001 17C9.00001 20.3137 11.6863 23 15 23C18.3137 23 21 20.3137 21 17C21 13 15 6 15 6Z"
-                         fill="#ff4757" scaleX="4.5" scaleY="4.5" />
+                         fill="#ff4757" scaleX="4.0" scaleY="4.0" />
             </StackPane>
 
-            <VBox alignment="CENTER" spacing="10">
+            <VBox alignment="CENTER" spacing="5">
                 <Label text="BloodLife" styleClass="brand-title"/>
                 <Label text="Puterea de a salva este în tine" styleClass="subtitle-label"/>
             </VBox>
