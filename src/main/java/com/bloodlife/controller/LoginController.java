@@ -22,7 +22,6 @@ public class LoginController {
 
     private UtilizatorService service;
 
-    // Metodă pentru a injecta service-ul din Main
     public void setService(UtilizatorService service) {
         this.service = service;
     }
@@ -38,11 +37,8 @@ public class LoginController {
         }
 
         try {
-            // 1. Efectuăm login-ul prin service
             Utilizator user = service.login(email, parola);
 
-            // 2. Apelăm metoda de redirecționare din HelloApplication
-            // Această metodă se ocupă acum de setUtilizatorCurent și de alegerea scenei corecte (Donator/Medic)
             HelloApplication.handleUserRedirection(user);
 
         } catch (ServiceException e) {
@@ -56,7 +52,6 @@ public class LoginController {
     @FXML
     protected void handleGoToRegister() {
         try {
-            // Aceasta metoda trebuie sa existe in HelloApplication si sa incarce register.fxml
             HelloApplication.showRegisterScene();
         } catch (Exception e) {
             statusLabel.setText("Eroare la deschiderea ferestrei de înregistrare!");

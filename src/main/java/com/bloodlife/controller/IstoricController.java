@@ -27,11 +27,10 @@ public class IstoricController {
     @FXML private TableColumn<DonareInfo, String> colData, colTip, colCantitate, colCentru, colActiune;
 
     private Utilizator utilizatorLogat;
-    private ProgramareDbRepository programareRepo; // Adăugăm instanța repository-ului
+    private ProgramareDbRepository programareRepo;
 
     public void setInitialData(Utilizator user) {
         this.utilizatorLogat = user;
-        // Inițializăm repository-ul aici, cu detaliile de conectare
         this.programareRepo = new ProgramareDbRepository("jdbc:postgresql://localhost:5432/bloodlife_db", "postgres", "patratel98");
         configurareTabel();
         incarcaDatele();
@@ -43,7 +42,6 @@ public class IstoricController {
         colCantitate.setCellValueFactory(new PropertyValueFactory<>("cantitate"));
         colCentru.setCellValueFactory(new PropertyValueFactory<>("centru"));
 
-        // Buton de download în celulă
         colActiune.setCellFactory(param -> new TableCell<>() {
             private final Button btn = new Button("📥 Descarcă PDF");
             {
@@ -66,7 +64,6 @@ public class IstoricController {
     private void incarcaDatele() {
         ObservableList<DonareInfo> lista = FXCollections.observableArrayList();
         try {
-            // Folosim metoda din repository pentru a prelua istoricul
             List<Map<String, Object>> istoricDonari = programareRepo.getIstoricDonari(utilizatorLogat.getId());
 
             for (Map<String, Object> donare : istoricDonari) {
@@ -78,7 +75,7 @@ public class IstoricController {
                 ));
             }
             tabelIstoric.setItems(lista);
-        } catch (RuntimeException e) { // Catch RuntimeException from repository
+        } catch (RuntimeException e) {
             afiseazaAlerta("Eroare Bază de Date", "Nu s-a putut încărca istoricul donărilor: " + e.getMessage(), Alert.AlertType.ERROR);
             e.printStackTrace();
         }
@@ -93,14 +90,12 @@ public class IstoricController {
             PdfWriter.getInstance(document, new FileOutputStream(numeFisier));
             document.open();
 
-            // 1. Antet Medical
             Font fontTitlu = new Font(Font.HELVETICA, 18, Font.BOLD, java.awt.Color.RED);
             Paragraph titlu = new Paragraph("BLOODLIFE - BULETIN DE ANALIZE", fontTitlu);
             titlu.setAlignment(Element.ALIGN_CENTER);
             document.add(titlu);
             document.add(new Paragraph(" "));
 
-            // 2. Informații Donator și Recoltare
             document.add(new Paragraph("Donator: " + utilizatorLogat.getNume()));
             document.add(new Paragraph("Data Recoltării: " + info.getData()));
             document.add(new Paragraph("Centru: " + info.getCentru()));
@@ -108,16 +103,13 @@ public class IstoricController {
             document.add(new Paragraph("-------------------------------------------------------------------------------------------------------------------------"));
             document.add(new Paragraph(" "));
 
-            // 3. Tabel Rezultate Analize
-            PdfPTable table = new PdfPTable(3); // 3 coloane
+            PdfPTable table = new PdfPTable(3);
             table.setWidthPercentage(100);
 
-            // Header Tabel
             addTableHeader(table, "Analiză");
             addTableHeader(table, "Rezultat");
             addTableHeader(table, "Valori Referință");
 
-            // Date Fictive (Standard Medical)
             addRows(table, "Hemoglobină", "14.5 g/dL", "13.0 - 17.0");
             addRows(table, "Glicemie", "92 mg/dL", "70 - 105");
             addRows(table, "VDRL / HIV", "NEGATIV", "NEGATIV");
@@ -127,7 +119,6 @@ public class IstoricController {
 
             document.add(table);
 
-            // 4. Semnătura și Parafa
             document.add(new Paragraph(" "));
             document.add(new Paragraph(" "));
             Paragraph parafa = new Paragraph("Document generat automat de sistemul BloodLife.\nNu necesită semnătură olografă.");
@@ -137,7 +128,6 @@ public class IstoricController {
 
             document.close();
 
-            // 5. Deschide PDF-ul automat după generare
             File file = new File(numeFisier);
             if (Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().open(file);
@@ -149,7 +139,6 @@ public class IstoricController {
         }
     }
 
-    // Metode ajutătoare pentru Tabelul PDF
     private void addTableHeader(PdfPTable table, String columnTitle) {
         PdfPCell header = new PdfPCell();
         header.setBackgroundColor(java.awt.Color.LIGHT_GRAY);
@@ -179,7 +168,6 @@ public class IstoricController {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // Clasă Helper pentru rândurile tabelului
     public static class DonareInfo {
         private final String data, tip, cantitate, centru;
         public DonareInfo(String d, String t, String c, String l) {

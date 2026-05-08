@@ -58,9 +58,7 @@ public class HelloApplication extends Application {
         primaryStage.show();
     }
 
-    /**
-     * REDIRECȚIONARE INTELIGENTĂ ÎN FUNCȚIE DE ROL
-     */
+
     public static void showMainInterface() throws IOException {
         if (utilizatorCurent == null) {
             showLoginScene();

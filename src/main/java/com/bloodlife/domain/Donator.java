@@ -22,7 +22,6 @@ public class Donator {
         this.esteEligibil = esteEligibil;
     }
 
-    // --- GETTERE (Esențiale pentru Repository/SQL) ---
     public Long getIdUtilizator() { return idUtilizator; }
     public String getGrupaSanguina() { return grupaSanguina; }
     public String getRh() { return rh; }
@@ -31,7 +30,6 @@ public class Donator {
     public LocalDate getUltimaDonare() { return ultimaDonare; }
     public boolean isEsteEligibil() { return esteEligibil; }
 
-    // --- SETTERE (Esențiale pentru Service/Logica de business) ---
     public void setIdUtilizator(Long idUtilizator) { this.idUtilizator = idUtilizator; }
     public void setGrupaSanguina(String grupaSanguina) { this.grupaSanguina = grupaSanguina; }
     public void setRh(String rh) { this.rh = rh; }
@@ -40,7 +38,6 @@ public class Donator {
     public void setUltimaDonare(LocalDate ultimaDonare) { this.ultimaDonare = ultimaDonare; }
     public void setEsteEligibil(boolean esteEligibil) { this.esteEligibil = esteEligibil; }
 
-    // Optional: O metodă toString ne ajută enorm la debug în consolă
     @Override
     public String toString() {
         return "Donator{" +

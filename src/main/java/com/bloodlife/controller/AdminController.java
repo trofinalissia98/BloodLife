@@ -171,7 +171,6 @@ public class AdminController {
         confirm.setContentText("Sigur doriți să ștergeți/dezactivați contul lui " + selectat.getNume() + "?");
 
         if (confirm.showAndWait().get() == ButtonType.OK) {
-            // Momentan facem DELETE pentru că nu avem coloana 'activ' în schema DB a proiectului
             String sql = "DELETE FROM utilizatori WHERE id = ?";
             try (Connection con = DriverManager.getConnection(url, user, pass);
                  PreparedStatement ps = con.prepareStatement(sql)) {

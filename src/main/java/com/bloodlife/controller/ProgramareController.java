@@ -27,10 +27,8 @@ public class ProgramareController {
         this.service = service;
         this.utilizatorLogat = user;
 
-        // Incarcam centrele in ComboBox
         centruCombo.getItems().addAll(service.getCentre());
 
-        // Blocăm datele din trecut în DatePicker
         dataPicker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
@@ -38,7 +36,6 @@ public class ProgramareController {
             }
         });
 
-        // Ascultăm când se schimbă centrul sau data pentru a reîncărca orele
         centruCombo.setOnAction(e -> actualizeazaOrele());
         dataPicker.setOnAction(e -> actualizeazaOrele());
     }
@@ -57,7 +54,6 @@ public class ProgramareController {
             for (SlotOra slot : sloturi) {
                 Button btnOra = new Button(slot.ora().toString());
 
-                // ADAUGĂ CLASA CSS
                 btnOra.getStyleClass().add("time-slot-button");
 
                 if (!slot.disponibil()) {
@@ -65,10 +61,8 @@ public class ProgramareController {
                     btnOra.setOpacity(0.4);
                 } else {
                     btnOra.setOnAction(e -> {
-                        // Ștergem stilul de "selectat" de la toate
                         oreContainer.getChildren().forEach(n -> n.getStyleClass().remove("time-slot-button-selected"));
 
-                        // Îl adăugăm la cel curent (va trebui să definești .time-slot-button-selected în CSS)
                         btnOra.getStyleClass().add("time-slot-button-selected");
 
                         oraSelectata = slot.ora();
@@ -97,7 +91,6 @@ public class ProgramareController {
                 alert.setContentText("Programarea a fost înregistrată cu succes pentru ora " + oraSelectata + "!");
                 alert.showAndWait();
 
-                // Ne întoarcem la Dashboard
                 HelloApplication.showDashboard();
 
             } catch (Exception e) {

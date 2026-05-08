@@ -14,7 +14,6 @@ public class PungaSange {
         this.cantitate = cantitate; this.status = status; this.data = data;
     }
 
-    // Getters necesari pentru TableView
     public String getCod() { return cod; }
     public String getTip() { return tip; }
     public String getGrupa() { return grupa; }

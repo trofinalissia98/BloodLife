@@ -23,7 +23,6 @@ public class ChestionarService {
             Intrebare q = entry.getKey();
             Boolean raspunsDat = entry.getValue();
 
-            // Dacă răspunsul dat nu coincide cu cel admisibil, e descalificat
             if (raspunsDat != q.getRaspunsAdmisibil()) {
                 esteEligibil = false;
                 break;

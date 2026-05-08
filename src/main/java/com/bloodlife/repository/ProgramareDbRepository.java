@@ -62,7 +62,6 @@ public class ProgramareDbRepository {
 
     public List<Map<String, Object>> getIstoricDonari(Long idDonator) {
         List<Map<String, Object>> istoric = new ArrayList<>();
-        // Am scos join-ul cu pungi_sange deoarece coloana id_programare pare să lipsească în baza de date reală
         String sql = """
         SELECT 
             p.id AS id_programare, 
@@ -101,8 +100,7 @@ public class ProgramareDbRepository {
     public void finalizeazaProcesDonare(Long idProgramare, String codPunga, String tip, int cantitate) throws SQLException {
         String sqlUpdateProg = "UPDATE programari SET status = 'FINALIZATA' WHERE id = ?";
         String sqlGetInfo = "SELECT d.grupa_sanguina, d.rh FROM donatori d JOIN programari p ON p.id_donator = d.id_utilizator WHERE p.id = ?";
-        
-        // Folosim INSERT fără id_programare pentru a evita eroarea, deoarece coloana nu există
+
         String sqlInsertStoc = "INSERT INTO pungi_sange (cod_unitate, tip_recoltare, grupa_sanguina, rh, cantitate_ml, status_punga) VALUES (?, ?, ?, ?, ?, 'DISPONIBIL')";
         
         String sqlUpdateUltima = "UPDATE donatori SET ultima_donare = CURRENT_DATE WHERE id_utilizator = (SELECT id_donator FROM programari WHERE id = ?)";

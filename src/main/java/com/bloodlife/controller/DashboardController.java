@@ -54,7 +54,6 @@ public class DashboardController {
                     "WHERE id_donator = ? AND status = 'FINALIZATA' " +
                     "ORDER BY data_programare DESC LIMIT 1";
 
-            // Corectat: Folosim dbUrl, dbUser, dbPass
             try (Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPass)) {
                 PreparedStatement psV = con.prepareStatement(sqlViitoare);
                 psV.setLong(1, user.getId());

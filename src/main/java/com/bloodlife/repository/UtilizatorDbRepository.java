@@ -115,7 +115,6 @@ public class UtilizatorDbRepository implements IUtilizatorRepository {
         return null;
     }
 
-    // Metodă helper pentru a evita duplicarea codului de mapare
     private Utilizator extractUtilizatorFromResultSet(ResultSet rs) throws SQLException {
         return new Utilizator(
                 rs.getLong("id"),

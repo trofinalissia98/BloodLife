@@ -37,7 +37,6 @@ public class ChestionarDbRepository {
             ps.setBoolean(2, esteEligibil);
             ps.executeUpdate();
 
-            // Update status donator
             String updateSql = "UPDATE donatori SET este_eligibil = ? WHERE id_utilizator = ?";
             try (PreparedStatement psUpdate = con.prepareStatement(updateSql)) {
                 psUpdate.setBoolean(1, esteEligibil);
@@ -46,7 +45,6 @@ public class ChestionarDbRepository {
             }
         } catch (SQLException e) {
             System.err.println("Eroare DB: " + e.getMessage());
-            // Aruncăm o eroare personalizată ca să o prindem în Controller
             throw new RuntimeException("Nu am putut salva rezultatul. Verifică dacă utilizatorul există în tabelul donatori.");
         }
     }

@@ -143,7 +143,6 @@ public class StatisticiController {
     @FXML
     private void handleBack() {
         try {
-            // FIX: Folosim showMainInterface() pentru a reveni la interfața potrivită rolului
             HelloApplication.showMainInterface();
         } catch (Exception e) {
             e.printStackTrace();

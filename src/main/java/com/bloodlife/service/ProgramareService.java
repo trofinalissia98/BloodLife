@@ -40,7 +40,6 @@ public class ProgramareService {
     }
 
     public void creeazaProgramare(Long idDonator, CentruDonare centru, LocalDate data, LocalTime ora) throws Exception {
-        // Verificare restrictie 30 de zile
         Donator donator = donatorRepo.cautaDupaId(idDonator);
         if (donator != null && donator.getUltimaDonare() != null) {
             long zileTrecute = ChronoUnit.DAYS.between(donator.getUltimaDonare(), LocalDate.now());

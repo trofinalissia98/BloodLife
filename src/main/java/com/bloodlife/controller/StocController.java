@@ -32,22 +32,16 @@ public class StocController {
         filterTipCombo.setItems(FXCollections.observableArrayList("Sânge Total", "Plasmă", "Trombocite"));
         filterGrupaCombo.setItems(FXCollections.observableArrayList("0", "A", "B", "AB"));
         colCod.setCellValueFactory(new PropertyValueFactory<>("cod"));
-        // ... restul coloanelor ...
-
-        // 2. Populăm ComboBox-urile pentru FILTRARE (cele de sus)
         filterTipCombo.setItems(FXCollections.observableArrayList("Sânge Total", "Plasmă", "Trombocite"));
         filterGrupaCombo.setItems(FXCollections.observableArrayList("0", "A", "B", "AB"));
 
-        // 3. !!! ASTA LIPSEA: Populăm ComboBox-urile pentru EMITERE ALERTĂ (cele de jos) !!!
         alertGrupaCombo.setItems(FXCollections.observableArrayList("0", "A", "B", "AB"));
         alertRhCombo.setItems(FXCollections.observableArrayList("+", "-"));
-
-        // 4. Încărcăm datele inițiale în tabel
 
         incarcaDatele();
     }
 
-    // --- LOGICA DE UPDATE STATUS ---
+
     private void updateStatusPunga(String noulStatus) {
         PungaSange selectata = stocTable.getSelectionModel().getSelectedItem();
 
@@ -66,8 +60,6 @@ public class StocController {
             ps.setString(1, noulStatus);
             ps.setString(2, selectata.getCod());
             ps.executeUpdate();
-
-            // Reîncărcăm datele ca să vedem schimbarea
             handleFilter();
 
         } catch (SQLException e) {
@@ -121,8 +113,6 @@ public class StocController {
     @FXML private ComboBox<String> alertGrupaCombo, alertRhCombo;
     @FXML private TextField alertMesajField;
 
-// Adaugă în initialize():
-// alertRhCombo.setItems(FXCollections.observableArrayList("+", "-"));
 
     @FXML
     private void handleTrimiteAlerta() {
@@ -136,7 +126,6 @@ public class StocController {
         }
 
         try (Connection con = DriverManager.getConnection(url, user, pass)) {
-            // 1. Salvăm alerta în tabelul alerte_stoc
             String sqlInsert = "INSERT INTO alerte_stoc (grupa_target, rh_target, mesaj) VALUES (?, ?, ?)";
             PreparedStatement psInsert = con.prepareStatement(sqlInsert);
             psInsert.setString(1, grupa);
@@ -144,7 +133,6 @@ public class StocController {
             psInsert.setString(3, mesaj);
             psInsert.executeUpdate();
 
-            // 2. Numărăm donatorii care vor primi notificarea (pentru raportul de trimitere)
             String sqlCount = "SELECT COUNT(*) FROM donatori WHERE grupa_sanguina = ? AND rh = ?";
             PreparedStatement psCount = con.prepareStatement(sqlCount);
             psCount.setString(1, grupa);
@@ -154,7 +142,6 @@ public class StocController {
             int nrDonatori = 0;
             if (rs.next()) nrDonatori = rs.getInt(1);
 
-            // 3. Afișăm raportul succesului
             afiseazaAlerta("Alertă Trimisă",
                     "Sistemul a emis alerta pentru grupa " + grupa + rh + ".\n" +
                             "Notificări trimise către: " + nrDonatori + " donatori compatibili.",
@@ -169,10 +156,9 @@ public class StocController {
     private void afiseazaAlerta(String titlu, String mesaj, Alert.AlertType tip) {
         Alert alert = new Alert(tip);
         alert.setTitle(titlu);
-        alert.setHeaderText(null); // Păstrăm header-ul curat
+        alert.setHeaderText(null);
         alert.setContentText(mesaj);
 
-        // Putem adăuga și un pic de stil direct pe fereastra de alertă
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("/com/bloodlife/style.css").toExternalForm());
         dialogPane.getStyleClass().add("my-alert");

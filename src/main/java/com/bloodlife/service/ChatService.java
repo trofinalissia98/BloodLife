@@ -18,18 +18,12 @@ public class ChatService {
     }
 
     public String getAiResponse(String userMessage) throws IOException {
-        // Luăm cheia chiar în momentul apelului, nu la începutul programului
         String apiKey = dotenv.get("GEMINI_API_KEY");
 
         if (apiKey == null || apiKey.isEmpty()) {
             throw new IOException("Cheia API lipsește din fișierul .env!");
         }
 
-        // URL-ul stabil pentru Europa/România (v1beta uneori dă 404 pe modele pro)
-        // Încearcă varianta asta cu "gemini-1.5-flash" (e cel mai disponibil acum)
-        // Am schimbat gemini-1.5-flash cu gemini-pro
-        // Trecem pe v1 (stabil) și modelul gemini-pro (fără numere de versiune în nume)
-        // Folosim modelul pe care browserul tocmai ni l-a confirmat ca fiind disponibil
         String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKey;
 
         String context = "Ești Bloodie, asistentul virtual al aplicației BloodLife. " +
@@ -54,13 +48,12 @@ public class ChatService {
         );
 
         Request request = new Request.Builder()
-                .url(url) // Folosim URL-ul construit local aici
+                .url(url)
                 .post(body)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                // IMPORTANT: Printează în consolă ce zice Google (mesajul de eroare JSON)
                 String errorBody = response.body() != null ? response.body().string() : "no error body";
                 System.err.println("Detalii eroare Google: " + errorBody);
                 throw new IOException("Eroare API: " + response.code());

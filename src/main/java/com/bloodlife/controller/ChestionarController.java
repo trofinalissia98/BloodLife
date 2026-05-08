@@ -39,7 +39,6 @@ public class ChestionarController {
         for (Intrebare q : lista) {
             Label lbl = new Label(q.getText());
             lbl.setWrapText(true);
-            // Am eliminat forțarea culorii din Java pentru a lăsa CSS-ul să gestioneze contrastul
             lbl.setStyle("-fx-font-weight: bold;");
 
             RadioButton rbDa = new RadioButton("DA");

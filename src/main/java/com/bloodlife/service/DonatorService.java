@@ -16,10 +16,8 @@ public class DonatorService {
 
         boolean eligibil = true;
 
-        // Regula 1: Greutatea (conform documentului tău)
         if (donator.getGreutate() < 50) eligibil = false;
 
-        // Regula 2: Intervalul de timp (ex: 90 de zile între donări)
         if (donator.getUltimaDonare() != null) {
             long zileTrecute = ChronoUnit.DAYS.between(donator.getUltimaDonare(), LocalDate.now());
             if (zileTrecute < 90) eligibil = false;

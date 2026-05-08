@@ -20,5 +20,5 @@ public class CentruDonare {
     public int getCapacitatePeOra() { return capacitatePeOra; }
 
     @Override
-    public String toString() { return nume; } // Important pentru ComboBox
+    public String toString() { return nume; }
 }
