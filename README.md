@@ -110,33 +110,6 @@ The application is backed by a highly normalized relational structure, strictly 
 * **Complex Joins:** The `appointments` table serves as the crucial junction bridging `donors` and `donation_centers`.
 * **Inventory Master:** The `blood_bags` table records the ultimate biological data (UUID code, collection type, blood group, Rh, volume in ml) and the real-time status of the physical unit.
 
----
-
-## ⚙️ Installation & Setup
-
-### Prerequisites
-* **Java JDK:** Version 17 or higher (with JavaFX included or configured separately).
-* **PostgreSQL:** Installed and running locally (default port `5432`).
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/bloodlife.git
-cd bloodlife
-```
-
-### 2. Database Configuration
-1. Open pgAdmin or your `psql` terminal.
-2. Create the target database: `CREATE DATABASE bloodlife_db;`
-3. Execute the provided SQL schema script (e.g., located in `src/main/resources/schema.sql`) to generate the required tables, enums, and views.
-4. Update your database credentials within the connection class (e.g., `DatabaseConnection.java`):
-```java
-String url = "jdbc:postgresql://localhost:5432/bloodlife_db";
-String user = "postgres";
-String password = "your_secure_password";
-```
-
-### 3. Build & Run
-Compile and launch the project via your preferred IDE (IntelliJ IDEA, Eclipse) by executing the `Main.java` class (or whichever class extends `javafx.application.Application`).
 
 ---
 <div align="center">
