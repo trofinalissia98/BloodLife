@@ -1,6 +1,6 @@
 <div align="center">
   <h1>🩸 BloodLife</h1>
-  <h3>Advanced Blood Donation Management System 🚧</h3>
+  <h3>Advanced Blood Donation Management System ( Work in progress ) 🚧</h3>
   <p><i>A multi-role desktop platform, built with JavaFX, designed to optimize medical workflows and save lives.</i></p>
 
   <!-- Badges -->
